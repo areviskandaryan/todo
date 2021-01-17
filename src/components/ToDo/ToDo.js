@@ -2,61 +2,59 @@ import React, {Component} from "react";
 import {v4 as uuidv4} from 'uuid';
 import styles from "./ToDo.module.css";
 import {Container, Row, Col, Card, FormControl, InputGroup, Button} from 'react-bootstrap';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faEdit} from '@fortawesome/free-solid-svg-icons';
 
-console.log(Card)
+
 export default class ToDo extends Component {
     state = {
         tasks: [],
         selectedTasks: [],
-        todo: {
-            id: uuidv4(),
-            title: "",
-            description: "",
-            status: "active",
-        }
+        title: "",
+        description: "",
+
     }
     handleCange = ({target: {value, name}}) => {
-        const {todo} = this.state;
+
         this.setState({
-            todo: {...todo, [name]: value}
+            [name]: value,
         })
     }
+
     handleAdd = () => {
-        const {tasks, todo} = this.state;
-        if (todo.title.trim()) {
+        const {tasks, title, description} = this.state;
+        if (title.trim()) {
+            const newTask = {
+                _id: uuidv4(),
+                title,
+                description,
+            }
             this.setState({
-                tasks: [...tasks, todo],
-                todo: {
-                    id: uuidv4(),
-                    title: "",
-                    description: "",
-                    status: "active",
-                }
+                tasks: [...tasks, newTask],
+                title: "",
+                description: "",
+
             })
         }
     }
     handleDelete = (uid) => {
         const {tasks} = this.state
-        const filteredTask = tasks.filter(task => uid !== task.id);
+        const filteredTask = tasks.filter(task => uid !== task._id);
         this.setState({
             tasks: filteredTask,
         })
     }
 
     handleSelected = (task) => {
-        const {tasks, selectedTasks} = this.state;
+        const {selectedTasks} = this.state;
         const newSelected =
-            !selectedTasks.find(item => item.id === task.id) ?
-                [...selectedTasks, task] : selectedTasks.filter(item => item.id !== task.id);
+            !selectedTasks.find(item => item._id === task._id) ?
+                [...selectedTasks, task] : selectedTasks.filter(item => item._id !== task._id);
         this.setState({selectedTasks: newSelected});
 
     }
     handleDeleteSelected = () => {
         const {tasks, selectedTasks} = this.state;
         const removedTasks = tasks.filter(task => {
-            return !(selectedTasks.find(item => item.id === task.id))
+            return !(selectedTasks.find(item => item._id === task._id))
         })
         this.setState({
             tasks: removedTasks,
@@ -64,20 +62,19 @@ export default class ToDo extends Component {
         })
     }
 
+
     render() {
-        const {title, description} = this.state.todo;
-        const {tasks, selectedTasks} = this.state;
+        const {tasks, title, description,selectedTasks} = this.state;
         const col = tasks.map(task => {
             return (
-                <Col key={task.id} xs={12} sm={6} md={4} lg={3} xl={2}>
+                <Col key={task._id} xs={12} sm={6} md={4} lg={3} xl={2}>
                     <Card className={styles.card}>
-                        <input type="checkbox" value={selectedTasks.find(item => item.id === task.id)}
+                        <input type="checkbox" value={selectedTasks.find(item => item._id === task._id)}
                                onChange={() => this.handleSelected(task)}/>
                         <Card.Body>
                             <Card.Title>{task.title}</Card.Title>
                             <Card.Text>Description: {task.description}</Card.Text>
-                            <Card.Text>Status: {task.status}</Card.Text>
-                            <Button variant="danger" onClick={() => this.handleDelete(task.id)}>Delete</Button>
+                            <Button variant="danger" onClick={() => this.handleDelete(task._id)}>Delete</Button>
                         </Card.Body>
                     </Card>
                 </Col>
