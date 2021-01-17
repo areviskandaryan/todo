@@ -1,41 +1,29 @@
 import React, {Component} from "react";
-import {v4 as uuidv4} from 'uuid';
+import Task from "../Task/Task";
+import InputDatas from "../InputDatas/InputDatas";
 import styles from "./ToDo.module.css";
-import {Container, Row, Col, Card, FormControl, InputGroup, Button} from 'react-bootstrap';
+import {Container, Row, Col, Button} from 'react-bootstrap';
 
 
-export default class ToDo extends Component {
+class ToDo extends Component {
+
     state = {
         tasks: [],
         selectedTasks: new Set(),
-        title: "",
-        description: "",
-
     }
-    handleChange = ({target: {value, name}}) => {
+
+    handleAdd = (newTask) => {
+        const {tasks} = this.state;
 
         this.setState({
-            [name]: value,
+            tasks: [...tasks, newTask],
+            title: "",
+            description: "",
         })
     }
 
-    handleAdd = () => {
-        const {tasks, title, description} = this.state;
-        if (title.trim()) {
-            const newTask = {
-                _id: uuidv4(),
-                title,
-                description,
-            }
-            this.setState({
-                tasks: [...tasks, newTask],
-                title: "",
-                description: "",
 
-            })
-        }
-    }
-    handleDelete = (uid) => {
+    deleteTask = (uid) => {
         const {tasks} = this.state
         const filteredTask = tasks.filter(task => uid !== task._id);
         this.setState({
@@ -43,15 +31,18 @@ export default class ToDo extends Component {
         })
     }
 
+
     handleSelectedTasks = (taskId) => {
         const selectedTasks = new Set(this.state.selectedTasks);
-        if(selectedTasks.has(taskId)){
+        if (selectedTasks.has(taskId)) {
             selectedTasks.delete(taskId);
         } else {
             selectedTasks.add(taskId);
         }
         this.setState({selectedTasks});
     }
+
+
     handleDeleteSelectedTasks = () => {
         const {tasks, selectedTasks} = this.state;
         const removedTasks = tasks.filter(task => {
@@ -62,37 +53,21 @@ export default class ToDo extends Component {
             selectedTasks: new Set(),
         })
     }
-    handleKeyDown = (e)=>{
-       if(e.key === "Enter"){
-           this.handleAdd();
-       }
-    }
+
     render() {
-        const {tasks, title, description,selectedTasks} = this.state;
-        const col = tasks.map(task => {
+        const {tasks, selectedTasks} = this.state;
+        const taskComponents = tasks.map(task => {
             return (
                 <Col key={task._id} xs={12} sm={6} md={4} lg={3} xl={2}>
-                    <Card className={styles.card}>
-                        <Card.Body>
-                            <input
-                                type="checkbox"
-                                checked={selectedTasks.has(task._id)}
-                                onChange={() => this.handleSelectedTasks(task._id)}
-                            />
-                            <Card.Title>{task.title}</Card.Title>
-                            <Card.Text>Description: {task.description}</Card.Text>
-
-                            <Button
-                                variant="danger"
-                                onClick={() => this.handleDelete(task._id)}
-                                disabled={!!selectedTasks.size}
-                            >
-                                Delete
-                            </Button>
-                        </Card.Body>
-                    </Card>
+                    <Task
+                        task={task}
+                        selectedTasks={selectedTasks}
+                        onDelete={this.deleteTask}
+                        disabled={!!selectedTasks.size}
+                        onSelect={this.handleSelectedTasks}
+                    />
                 </Col>
-            );
+            )
         })
         return (
             <>
@@ -100,34 +75,13 @@ export default class ToDo extends Component {
                 <Container>
                     <Row className="justify-content-center">
                         <Col xs={10}>
-                            <InputGroup className="mb-3">
-                                <FormControl
-                                    placeholder="Title"
-                                    name="title"
-                                    value={title}
-                                    onChange={this.handleChange}
-                                    onKeyDown = {this.handleKeyDown}
-                                />
-                                <FormControl
-                                    placeholder="Description"
-                                    name="description"
-                                    value={description}
-                                    onChange={this.handleChange}
-                                    onKeyDown = {this.handleKeyDown}
-                                />
-                                <InputGroup.Append>
-                                    <Button
-                                        variant="outline-primary"
-                                        onClick={this.handleAdd}
-                                        disabled={!!selectedTasks.size}
-                                    >
-                                        Add
-                                    </Button>
-                                </InputGroup.Append>
-                            </InputGroup>
+                            < InputDatas
+                                onAdd={this.handleAdd}
+                                disabled={!!selectedTasks.size}
+                            />
                         </Col>
                     </Row>
-                    <Row>{col}</Row>
+                    <Row>{taskComponents}</Row>
                     <Row className="justify-content-center">
                         <Col xs={8} sm={4}>
                             <Button
@@ -145,3 +99,5 @@ export default class ToDo extends Component {
         )
     }
 }
+
+export default ToDo;
