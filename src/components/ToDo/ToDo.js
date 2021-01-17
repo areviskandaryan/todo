@@ -1,63 +1,36 @@
 import React, {Component} from "react";
 import Task from "../Task/Task";
 import InputDatas from "../InputDatas/InputDatas";
-import {v4 as uuidv4} from 'uuid';
 import styles from "./ToDo.module.css";
-import {Container, Row, Col, Card, FormControl, InputGroup, Button} from 'react-bootstrap';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faEdit} from '@fortawesome/free-solid-svg-icons';
+import {Container, Row, Col, Button} from 'react-bootstrap';
 
 
-export default class ToDo extends Component {
+class ToDo extends Component {
+
     state = {
         tasks: [],
         selectedTasks: new Set(),
-        todo: {
-            id: uuidv4(),
-            title: "",
-            description: "",
-            status: "active",
-        }
     }
 
-    handleCange = ({target: {value, name}}) => {
-        const {todo} = this.state;
+    handleAdd = (newTask) => {
+        const {tasks} = this.state;
+
         this.setState({
-            todo: {...todo, [name]: value}
+            tasks: [...tasks, newTask],
+            title: "",
+            description: "",
         })
     }
 
 
-    handleKeyDown = (e) => {
-        if (e.key === "Enter") {
-            this.handleAdd();
-        }
-    }
-
-
-    handleAdd = () => {
-        console.log("add");
-        const {tasks, todo} = this.state;
-        if (todo.title.trim()) {
-            this.setState({
-                tasks: [...tasks, todo],
-                todo: {
-                    id: uuidv4(),
-                    title: "",
-                    description: "",
-                    status: "active",
-                }
-            })
-        }
-    }
-
     deleteTask = (uid) => {
         const {tasks} = this.state
-        const filteredTask = tasks.filter(task => uid !== task.id);
+        const filteredTask = tasks.filter(task => uid !== task._id);
         this.setState({
             tasks: filteredTask,
         })
     }
+
 
     handleSelectedTasks = (taskId) => {
         const selectedTasks = new Set(this.state.selectedTasks);
@@ -68,10 +41,12 @@ export default class ToDo extends Component {
         }
         this.setState({selectedTasks});
     }
+
+
     handleDeleteSelectedTasks = () => {
         const {tasks, selectedTasks} = this.state;
         const removedTasks = tasks.filter(task => {
-            return !selectedTasks.has(task.id)
+            return !selectedTasks.has(task._id)
         })
         this.setState({
             tasks: removedTasks,
@@ -79,12 +54,11 @@ export default class ToDo extends Component {
         })
     }
 
-
     render() {
-        const {tasks,todo, selectedTasks} = this.state;
+        const {tasks, selectedTasks} = this.state;
         const taskComponents = tasks.map(task => {
             return (
-                <Col key={task.id} xs={12} sm={6} md={4} lg={3} xl={2}>
+                <Col key={task._id} xs={12} sm={6} md={4} lg={3} xl={2}>
                     <Task
                         task={task}
                         selectedTasks={selectedTasks}
@@ -93,7 +67,7 @@ export default class ToDo extends Component {
                         onSelect={this.handleSelectedTasks}
                     />
                 </Col>
-            );
+            )
         })
         return (
             <>
@@ -102,11 +76,8 @@ export default class ToDo extends Component {
                     <Row className="justify-content-center">
                         <Col xs={10}>
                             < InputDatas
-                                todo ={todo}
-                                onHandleCange={this.handleCange}
                                 onAdd={this.handleAdd}
-                                onHandleKeyDown = {this.handleKeyDown}
-                                disabled ={!!selectedTasks.size}
+                                disabled={!!selectedTasks.size}
                             />
                         </Col>
                     </Row>
@@ -128,3 +99,5 @@ export default class ToDo extends Component {
         )
     }
 }
+
+export default ToDo;

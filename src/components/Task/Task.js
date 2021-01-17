@@ -3,17 +3,19 @@ import styles from "./Task.module.css";
 import {Button, Card} from "react-bootstrap";
 
 class Task extends Component {
+
     state ={
         selected:false,
     }
 
     selectTasks=()=>{
         const {onSelect, task }=this.props;
-        onSelect(task.id);
+        onSelect(task._id);
         this.setState({
             selected:!this.state.selected,
         })
     }
+
     render(){
         const {task, selectedTasks,onDelete, disabled }=this.props;
         const {selected} = this.state;
@@ -22,15 +24,14 @@ class Task extends Component {
                 <Card.Body>
                     <input
                         type="checkbox"
-                        checked={selectedTasks.has(task.id)}
+                        checked={selectedTasks.has(task._id)}
                         onChange={this.selectTasks}
                     />
                     <Card.Title>{task.title}</Card.Title>
                     <Card.Text>Description: {task.description}</Card.Text>
-                    <Card.Text>Status: {task.status}</Card.Text>
                     <Button
                         variant="danger"
-                        onClick={() => onDelete(task.id)}
+                        onClick={() => onDelete(task._id)}
                         disabled={disabled}
                     >
                         Delete

@@ -1,11 +1,47 @@
 import React, {Component} from "react";
-import {Button,  FormControl, InputGroup} from "react-bootstrap";
+import {Button, FormControl, InputGroup} from "react-bootstrap";
+import {v4 as uuidv4} from "uuid";
 
 
 class InputDatas extends Component {
+    state = {
+        title: "",
+        description: "",
+    }
 
-    render(){
-        const {todo:{title,description}, onHandleCange, onHandleKeyDown, onAdd, disabled} = this.props;
+    handleChange = ({target: {value, name}}) => {
+        this.setState({
+            [name]: value,
+        })
+    }
+
+    handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            // this.handleAdd();
+        }
+    }
+
+    handleSubmit = () => {
+        const { onAdd } = this.props;
+        const title = this.state.title.trim();
+        const  description = this.state.description.trim();
+        if (title.trim()) {
+            const newTask = {
+                _id: uuidv4(),
+                title,
+                description,
+            };
+            onAdd(newTask);
+            this.setState({
+                title: "",
+                description: "",
+            });
+        }
+    }
+
+    render() {
+        const { disabled } = this.props;
+        const { title, description } = this.state;
 
         return (
             <InputGroup className="mb-3">
@@ -13,20 +49,22 @@ class InputDatas extends Component {
                     placeholder="Title"
                     name="title"
                     value={title}
-                    onChange={onHandleCange}
-                    onKeyDown = {onHandleKeyDown}
+                    onChange={this.handleChange}
+                    onKeyDown={this.handleKeyDown}
+                    disabled={disabled}
                 />
                 <FormControl
                     placeholder="Description"
                     name="description"
                     value={description}
-                    onChange={onHandleCange}
-                    onKeyDown = {onHandleKeyDown}
+                    onChange={this.handleChange}
+                    onKeyDown={this.handleKeyDown}
+                    disabled={disabled}
                 />
                 <InputGroup.Append>
                     <Button
                         variant="outline-primary"
-                        onClick={onAdd}
+                        onClick={this.handleSubmit}
                         disabled={disabled}
                     >
                         Add
