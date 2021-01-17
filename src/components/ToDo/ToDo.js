@@ -7,12 +7,12 @@ import {Container, Row, Col, Card, FormControl, InputGroup, Button} from 'react-
 export default class ToDo extends Component {
     state = {
         tasks: [],
-        selectedTasks: [],
+        selectedTasks: new Set(),
         title: "",
         description: "",
 
     }
-    handleCange = ({target: {value, name}}) => {
+    handleChange = ({target: {value, name}}) => {
 
         this.setState({
             [name]: value,
@@ -43,38 +43,52 @@ export default class ToDo extends Component {
         })
     }
 
-    handleSelected = (task) => {
-        const {selectedTasks} = this.state;
-        const newSelected =
-            !selectedTasks.find(item => item._id === task._id) ?
-                [...selectedTasks, task] : selectedTasks.filter(item => item._id !== task._id);
-        this.setState({selectedTasks: newSelected});
-
+    handleSelectedTasks = (taskId) => {
+        const selectedTasks = new Set(this.state.selectedTasks);
+        if(selectedTasks.has(taskId)){
+            selectedTasks.delete(taskId);
+        } else {
+            selectedTasks.add(taskId);
+        }
+        this.setState({selectedTasks});
     }
-    handleDeleteSelected = () => {
+    handleDeleteSelectedTasks = () => {
         const {tasks, selectedTasks} = this.state;
         const removedTasks = tasks.filter(task => {
-            return !(selectedTasks.find(item => item._id === task._id))
+            return !selectedTasks.has(task._id)
         })
         this.setState({
             tasks: removedTasks,
-            selectedTasks: [],
+            selectedTasks: new Set(),
         })
     }
-
-
+    handleKeyDown = (e)=>{
+       if(e.key === "Enter"){
+           this.handleAdd();
+       }
+    }
     render() {
         const {tasks, title, description,selectedTasks} = this.state;
         const col = tasks.map(task => {
             return (
                 <Col key={task._id} xs={12} sm={6} md={4} lg={3} xl={2}>
                     <Card className={styles.card}>
-                        <input type="checkbox" value={selectedTasks.find(item => item._id === task._id)}
-                               onChange={() => this.handleSelected(task)}/>
                         <Card.Body>
+                            <input
+                                type="checkbox"
+                                checked={selectedTasks.has(task._id)}
+                                onChange={() => this.handleSelectedTasks(task._id)}
+                            />
                             <Card.Title>{task.title}</Card.Title>
                             <Card.Text>Description: {task.description}</Card.Text>
-                            <Button variant="danger" onClick={() => this.handleDelete(task._id)}>Delete</Button>
+
+                            <Button
+                                variant="danger"
+                                onClick={() => this.handleDelete(task._id)}
+                                disabled={!!selectedTasks.size}
+                            >
+                                Delete
+                            </Button>
                         </Card.Body>
                     </Card>
                 </Col>
@@ -91,18 +105,21 @@ export default class ToDo extends Component {
                                     placeholder="Title"
                                     name="title"
                                     value={title}
-                                    onChange={this.handleCange}
+                                    onChange={this.handleChange}
+                                    onKeyDown = {this.handleKeyDown}
                                 />
                                 <FormControl
                                     placeholder="Description"
                                     name="description"
                                     value={description}
-                                    onChange={this.handleCange}
+                                    onChange={this.handleChange}
+                                    onKeyDown = {this.handleKeyDown}
                                 />
                                 <InputGroup.Append>
                                     <Button
                                         variant="outline-primary"
                                         onClick={this.handleAdd}
+                                        disabled={!!selectedTasks.size}
                                     >
                                         Add
                                     </Button>
@@ -115,8 +132,9 @@ export default class ToDo extends Component {
                         <Col xs={8} sm={4}>
                             <Button
                                 variant="danger"
-                                onClick={this.handleDeleteSelected}
+                                onClick={this.handleDeleteSelectedTasks}
                                 className={styles.button}
+                                disabled={!selectedTasks.size}
                             >
                                 Remove selected
                             </Button>
