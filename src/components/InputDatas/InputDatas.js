@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Button, FormControl, InputGroup} from "react-bootstrap";
 import {v4 as uuidv4} from "uuid";
+import PropTypes from "prop-types";
 
 
 class InputDatas extends Component {
@@ -17,14 +18,14 @@ class InputDatas extends Component {
 
     handleKeyDown = (e) => {
         if (e.key === "Enter") {
-            // this.handleAdd();
+            this.handleSubmit();
         }
     }
 
     handleSubmit = () => {
-        const { onAdd } = this.props;
+        const {onAdd} = this.props;
         const title = this.state.title.trim();
-        const  description = this.state.description.trim();
+        const description = this.state.description.trim();
         if (title.trim()) {
             const newTask = {
                 _id: uuidv4(),
@@ -40,8 +41,8 @@ class InputDatas extends Component {
     }
 
     render() {
-        const { disabled } = this.props;
-        const { title, description } = this.state;
+        const {disabled} = this.props;
+        const {title, description} = this.state;
 
         return (
             <InputGroup className="mb-3">
@@ -75,5 +76,10 @@ class InputDatas extends Component {
     }
 
 }
+
+InputDatas.propTypes = {
+    onAdd: PropTypes.func.isRequired,
+    disabled: PropTypes.bool.isRequired,
+};
 
 export default InputDatas
