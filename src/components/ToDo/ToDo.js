@@ -63,6 +63,14 @@ class ToDo extends Component {
 
     };
 
+    selectConfirm = ()=>{
+        const { tasks } = this.state;
+        const newSelectedTasks = tasks.map(({id})=>id);
+        this.setState({
+            selectedTasks :new Set(newSelectedTasks)
+        });
+    }
+
     render() {
         const {tasks, selectedTasks, showConfirm} = this.state;
         const taskComponents = tasks.map(task => {
@@ -93,7 +101,33 @@ class ToDo extends Component {
                     </Row>
                     <Row>{taskComponents}</Row>
                     <Row className="justify-content-center">
-                        <Col xs={8} sm={4}>
+                        <Col >
+                            <Button
+                                variant="primary"
+                                // disabled={!selectedTasks.size}
+                                // onClick={this.toggleConfirm}
+
+                            >
+                                Add New task
+                            </Button>
+                        </Col>
+                        <Col >
+                            <Button
+                                variant="warning"
+                                onClick={this.selectConfirm}
+                            >
+                              Select All
+                            </Button>
+                        </Col>
+                        <Col >
+                            <Button
+                                variant="warning"
+                                // onClick={this.toggleConfirm}
+                            >
+                                Deselect All
+                            </Button>
+                        </Col>
+                        <Col >
                             <Button
                                 variant="danger"
                                 disabled={!selectedTasks.size}
