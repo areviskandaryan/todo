@@ -1,7 +1,10 @@
 import React, {Component} from "react";
 import styles from "./Task.module.css";
 import {Button, Card} from "react-bootstrap";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
 import PropTypes from 'prop-types';
+
 
 class Task extends Component {
 
@@ -12,7 +15,7 @@ class Task extends Component {
     }
 
     render() {
-        const {task, onDelete, disabled, checked} = this.props;
+        const {task, onDelete, disabled, checked, onEdit} = this.props;
 
         return (
             <Card className={`${styles.card} ${checked ? styles.selected : ""}`}>
@@ -25,11 +28,20 @@ class Task extends Component {
                     <Card.Title>{task.title}</Card.Title>
                     <Card.Text>Description: {task.description}</Card.Text>
                     <Button
+                        variant="warning"
+                        className="m-1"
+                        onClick={() => onEdit(task)}
+                        disabled={disabled}
+                    >
+                        <FontAwesomeIcon icon={faEdit} />
+                    </Button>
+                    <Button
                         variant="danger"
+                        className="m-1"
                         onClick={() => onDelete(task._id)}
                         disabled={disabled}
                     >
-                        Delete
+                        <FontAwesomeIcon icon={faTrash} />
                     </Button>
                 </Card.Body>
             </Card>
