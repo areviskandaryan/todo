@@ -1,14 +1,15 @@
 import React, {Component} from "react";
-import {Button, FormControl, Modal} from "react-bootstrap";
 import {v4 as uuidv4} from "uuid"
 import PropTypes from 'prop-types';
+import {Button, FormControl, Modal} from "react-bootstrap";
+
 
 class ShowNewTask extends Component {
 
     state = {
         title: "",
         description: "",
-    }
+    };
 
     handleChange = ({target: {value, name}}) => {
         this.setState({

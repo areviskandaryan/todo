@@ -1,9 +1,10 @@
 import React, {Component} from "react";
+import PropTypes from 'prop-types';
 import styles from "./Task.module.css";
 import {Button, Card} from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
-import PropTypes from 'prop-types';
+
 
 
 class Task extends Component {
@@ -12,7 +13,7 @@ class Task extends Component {
         const {onSelect, task} = this.props;
         onSelect(task._id);
 
-    }
+    };
 
     render() {
         const {task, onDelete, disabled, checked, onEdit} = this.props;
