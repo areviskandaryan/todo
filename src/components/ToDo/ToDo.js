@@ -64,7 +64,7 @@ class ToDo extends Component {
         })
     };
 
-    toggleConfirm = () => {
+    toggleConfirm = () =>{
         this.setState({
             showConfirm: !this.state.showConfirm,
         })
@@ -114,7 +114,7 @@ class ToDo extends Component {
     };
 
     render() {
-        const {tasks, selectedTasks, editedTask, showConfirm, showNewTask, showEdit} = this.state;
+        const {tasks, selectedTasks, showConfirm} = this.state;
         const taskComponents = tasks.map(task => {
             return (
                 <Col key={task._id} xs={12} sm={6} md={4} lg={3} xl={2}>
