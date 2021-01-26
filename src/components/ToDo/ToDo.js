@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import Task from "../Task/Task";
 import {Container, Row, Col, Button} from 'react-bootstrap';
 import Confirm from "../Confirm/Confirm";
-import ShowNewTask from "../ShowNewTask";
+import NewTask from "../NewTask";
 import EditTaskModal from "../EditTaskModal";
 
 class ToDo extends Component {
@@ -134,7 +134,6 @@ class ToDo extends Component {
             <>
                 <h2>Add new task</h2>
                 <Container>
-                    <Row>{taskComponents}</Row>
                     <Row className="justify-content-center">
                         <Col>
                             <Button
@@ -172,6 +171,7 @@ class ToDo extends Component {
                             </Button>
                         </Col>
                     </Row>
+                    <Row>{taskComponents}</Row>
                 </Container>
 
                 {
@@ -184,7 +184,7 @@ class ToDo extends Component {
 
                 {
                     showNewTask &&
-                    <ShowNewTask
+                    <NewTask
                         onClose={this.toggleShowConfirmTask}
                         onAdd={this.handleAdd}
                         disabled={!!selectedTasks.size}

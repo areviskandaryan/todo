@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {Button, FormControl, Modal} from "react-bootstrap";
 
 
-class ShowNewTask extends Component {
+class NewTask extends Component {
 
     state = {
         title: "",
@@ -95,9 +95,9 @@ class ShowNewTask extends Component {
 
 
 }
-ShowNewTask.propTypes = {
+NewTask.propTypes = {
     onAdd: PropTypes.func.isRequired,
     onClose:PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
 };
-export default ShowNewTask;
+export default NewTask;
