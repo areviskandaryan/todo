@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { PureComponent } from "react";
 import PropTypes from 'prop-types';
 import styles from "./Task.module.css";
 import {Button, Card} from "react-bootstrap";
@@ -7,12 +7,12 @@ import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
 
 
 
-class Task extends Component {
+class Task extends PureComponent {
+
 
     selectTasks = () => {
         const {onSelect, task} = this.props;
         onSelect(task._id);
-
     };
 
     render() {
