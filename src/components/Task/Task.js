@@ -1,30 +1,25 @@
-import React,{ Component } from "react";
+import React, {Component} from "react";
 import styles from "./Task.module.css";
 import {Button, Card} from "react-bootstrap";
+import PropTypes from 'prop-types';
 
 class Task extends Component {
 
-    state ={
-        selected:false,
-    }
-
-    selectTasks=()=>{
-        const {onSelect, task }=this.props;
+    selectTasks = () => {
+        const {onSelect, task} = this.props;
         onSelect(task._id);
-        this.setState({
-            selected:!this.state.selected,
-        })
+
     }
 
-    render(){
-        const {task, selectedTasks,onDelete, disabled }=this.props;
-        const {selected} = this.state;
+    render() {
+        const {task, onDelete, disabled, checked} = this.props;
+
         return (
-            <Card className={`${styles.card} ${selected?styles.selected:""}`}>
+            <Card className={`${styles.card} ${checked ? styles.selected : ""}`}>
                 <Card.Body>
                     <input
                         type="checkbox"
-                        checked={selectedTasks.has(task._id)}
+                        checked={checked}
                         onChange={this.selectTasks}
                     />
                     <Card.Title>{task.title}</Card.Title>
@@ -41,5 +36,15 @@ class Task extends Component {
         )
     }
 }
+
+Task.propTypes = {
+    task: PropTypes.object.isRequired,
+    selectedTasks: PropTypes.object.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    disabled: PropTypes.bool.isRequired,
+    checked: PropTypes.bool.isRequired,
+};
+
 
 export default Task;

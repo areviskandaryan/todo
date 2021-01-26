@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import Task from "../Task/Task";
-import InputDatas from "../InputDatas/InputDatas";
-import styles from "./ToDo.module.css";
+import NewTask from "../NewTask/NewTask";
 import {Container, Row, Col, Button} from 'react-bootstrap';
+import Confirm from "../Confirm/Confirm";
 
 
 class ToDo extends Component {
@@ -10,6 +10,7 @@ class ToDo extends Component {
     state = {
         tasks: [],
         selectedTasks: new Set(),
+        showConfirm:false,
     }
 
     handleAdd = (newTask) => {
@@ -20,7 +21,7 @@ class ToDo extends Component {
             title: "",
             description: "",
         })
-    }
+    };
 
 
     deleteTask = (uid) => {
@@ -29,7 +30,7 @@ class ToDo extends Component {
         this.setState({
             tasks: filteredTask,
         })
-    }
+    };
 
 
     handleSelectedTasks = (taskId) => {
@@ -40,7 +41,7 @@ class ToDo extends Component {
             selectedTasks.add(taskId);
         }
         this.setState({selectedTasks});
-    }
+    };
 
 
     handleDeleteSelectedTasks = () => {
@@ -51,11 +52,19 @@ class ToDo extends Component {
         this.setState({
             tasks: removedTasks,
             selectedTasks: new Set(),
+            showConfirm:false,
         })
-    }
+    };
+
+    toggleConfirm = () =>{
+        this.setState({
+            showConfirm: !this.state.showConfirm,
+        })
+
+    };
 
     render() {
-        const {tasks, selectedTasks} = this.state;
+        const {tasks, selectedTasks, showConfirm} = this.state;
         const taskComponents = tasks.map(task => {
             return (
                 <Col key={task._id} xs={12} sm={6} md={4} lg={3} xl={2}>
@@ -65,6 +74,7 @@ class ToDo extends Component {
                         onDelete={this.deleteTask}
                         disabled={!!selectedTasks.size}
                         onSelect={this.handleSelectedTasks}
+                         checked = {selectedTasks.has(task._id)}
                     />
                 </Col>
             )
@@ -75,7 +85,7 @@ class ToDo extends Component {
                 <Container>
                     <Row className="justify-content-center">
                         <Col xs={10}>
-                            < InputDatas
+                            < NewTask
                                 onAdd={this.handleAdd}
                                 disabled={!!selectedTasks.size}
                             />
@@ -86,15 +96,20 @@ class ToDo extends Component {
                         <Col xs={8} sm={4}>
                             <Button
                                 variant="danger"
-                                onClick={this.handleDeleteSelectedTasks}
-                                className={styles.button}
                                 disabled={!selectedTasks.size}
+                                onClick={this.toggleConfirm}
                             >
                                 Remove selected
                             </Button>
                         </Col>
                     </Row>
                 </Container>
+                { showConfirm &&
+                <Confirm
+                    onClose = { this.toggleConfirm }
+                    count ={ selectedTasks.size }
+                    onConfirm={this.handleDeleteSelectedTasks}
+                />  }
             </>
         )
     }
