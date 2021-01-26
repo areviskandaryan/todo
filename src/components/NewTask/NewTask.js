@@ -4,7 +4,7 @@ import {v4 as uuidv4} from "uuid";
 import PropTypes from "prop-types";
 
 
-class InputDatas extends Component {
+class NewTask extends Component {
     state = {
         title: "",
         description: "",
@@ -77,9 +77,9 @@ class InputDatas extends Component {
 
 }
 
-InputDatas.propTypes = {
+NewTask.propTypes = {
     onAdd: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
 };
 
-export default InputDatas
+export default NewTask

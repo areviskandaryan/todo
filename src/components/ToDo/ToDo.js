@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Task from "../Task/Task";
-import InputDatas from "../InputDatas/InputDatas";
+import NewTask from "../NewTask/NewTask";
 import {Container, Row, Col, Button} from 'react-bootstrap';
 import Confirm from "../Confirm/Confirm";
 
@@ -85,7 +85,7 @@ class ToDo extends Component {
                 <Container>
                     <Row className="justify-content-center">
                         <Col xs={10}>
-                            < InputDatas
+                            < NewTask
                                 onAdd={this.handleAdd}
                                 disabled={!!selectedTasks.size}
                             />
