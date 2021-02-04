@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import Task from "../Task/Task";
 import {Container, Row, Col, Button} from 'react-bootstrap';
 import Confirm from "../Confirm/Confirm";
-import NewTask from "../NewTask";
+import NewTask from "../NewTask/NewTask";
 import EditTaskModal from "../EditTaskModal";
 
 class ToDo extends Component {
@@ -101,7 +101,7 @@ class ToDo extends Component {
 
     };
 
-    handleEdit = (editedTask) => {
+    handleEdit = (editedTask) =>{
         this.setState({
             editedTask,
             showEdit: true,
@@ -121,14 +121,38 @@ class ToDo extends Component {
 
     handleDeleteSelectedTasks = () => {
         const {tasks, selectedTasks} = this.state;
-        const removedTasks = tasks.filter(task => {
-            return !selectedTasks.has(task._id)
-        });
-        this.setState({
-            tasks: removedTasks,
-            selectedTasks: new Set(),
-            showConfirm: false,
-        })
+        fetch("http://localhost:3001/task/",
+            {
+                method: "PATCH",
+                body: JSON.stringify({tasks: Array.from(selectedTasks)}),
+                headers: {
+                    "Content-type": "application/json"
+                }
+            })
+            .then(async (res) => {
+                const response = await (res.json())
+                if (res.status >= 400 && res.status <= 500) {
+                    if (response.error) {
+                        throw response.error
+                    } else {
+                        throw new Error("Something went wrong")
+                    }
+                }
+
+                const removedTasks = tasks.filter(task => {
+                    return !selectedTasks.has(task._id)
+                });
+                this.setState({
+                    tasks: removedTasks,
+                    selectedTasks: new Set(),
+                    showConfirm: false,
+                })
+
+
+            })
+            .catch((error) => console.log("err", error))
+
+
     };
 
     toggleConfirm = () => {
@@ -166,18 +190,40 @@ class ToDo extends Component {
 
     handleReplaseEditTask = (newTask) => {
         const {tasks} = this.state;
-        const tasksArr = tasks.map((task) => {
-            if (task._id !== newTask._id) {
-                return task;
-            }
-            return newTask
-        })
-        this.setState({
-            tasks: tasksArr,
-            editedTask: {},
-            showEdit: false,
-        })
 
+        fetch(`http://localhost:3001/task/${newTask._id}`,
+            {
+                method: "PUT",
+                body: JSON.stringify(newTask),
+                headers: {
+                    "Content-type": "application/json"
+                }
+            })
+            .then(async (res) => {
+                const response = await (res.json())
+                if (res.status >= 400 && res.status <= 500) {
+                    if (response.error) {
+                        throw response.error
+                    } else {
+                        throw new Error("Something went wrong")
+                    }
+                }
+
+                const tasksArr = tasks.map((task) => {
+                    if (task._id !== newTask._id) {
+                        return task;
+                    }
+                    return newTask
+                })
+                this.setState({
+                    tasks: tasksArr,
+                    editedTask: {},
+                    showEdit: false,
+                })
+
+
+            })
+            .catch((error) => console.log("err", error))
     };
 
     render() {
