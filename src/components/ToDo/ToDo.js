@@ -16,22 +16,89 @@ class ToDo extends Component {
         showEdit: false
     };
 
+    componentDidMount() {
+        fetch("http://localhost:3001/task",
+            {
+                method: "GET",
+                headers: {
+                    "Content-type": "application/json"
+                }
+            })
+            .then(async (res) => {
+                const response = await (res.json())
+                if (res.status >= 400 && res.status <= 500) {
+                    if (response.error) {
+                        throw response.error
+                    } else {
+                        throw new Error("Something went wrong")
+                    }
+                }
+                this.setState({
+                    tasks: response,
+                })
+            })
+            .catch((error) => console.log("err", error))
+    }
+
+
     handleAdd = (newTask) => {
         const {tasks} = this.state;
+        fetch("http://localhost:3001/task",
+            {
+                method: "POST",
+                body: JSON.stringify(newTask),
+                headers: {
+                    "Content-type": "application/json"
+                }
+            })
+            .then(async (res) => {
+                const response = await (res.json())
+                if (res.status >= 400 && res.status <= 500) {
+                    if (response.error) {
+                        throw response.error
+                    } else {
+                        throw new Error("Something went wrong")
+                    }
+                }
+                this.setState({
+                    tasks: [...tasks, response],
+                    showNewTask: false,
+                })
+            })
+            .catch((error) => console.log("err", error))
 
-        this.setState({
-            tasks: [...tasks, newTask],
-            showNewTask: false,
-        })
+
     };
 
 
-    deleteTask = (uid) => {
+    deleteTask = (taskId) => {
         const {tasks} = this.state
-        const filteredTask = tasks.filter(task => uid !== task._id);
-        this.setState({
-            tasks: filteredTask,
-        })
+        fetch(`http://localhost:3001/task/${taskId}`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Content-type": "application/json"
+                }
+            })
+            .then(async (res) => {
+                const response = await (res.json())
+                if (res.status >= 400 && res.status <= 500) {
+                    if (response.error) {
+                        throw response.error
+                    } else {
+                        throw new Error("Something went wrong")
+                    }
+                }
+
+                const filteredTask = tasks.filter(task => taskId !== task._id);
+                this.setState({
+                    tasks: filteredTask,
+                })
+
+
+            })
+            .catch((error) => console.log("err", error))
+
     };
 
     handleEdit = (editedTask) => {
@@ -64,7 +131,7 @@ class ToDo extends Component {
         })
     };
 
-    toggleConfirm = () =>{
+    toggleConfirm = () => {
         this.setState({
             showConfirm: !this.state.showConfirm,
         })

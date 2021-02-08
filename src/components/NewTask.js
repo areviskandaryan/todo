@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {v4 as uuidv4} from "uuid"
+//import {v4 as uuidv4} from "uuid"
 import PropTypes from 'prop-types';
 import {Button, FormControl, Modal} from "react-bootstrap";
 
@@ -29,7 +29,6 @@ class NewTask extends Component {
         const description = this.state.description.trim();
         if (title.trim()) {
             const newTask = {
-                _id: uuidv4(),
                 title,
                 description,
             };
