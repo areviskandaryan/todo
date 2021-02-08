@@ -28,7 +28,7 @@ class Task extends PureComponent {
                         checked={checked}
                         onChange={this.selectTasks}
                     />
-                    <Card.Title>{task.title}</Card.Title>
+                    <Link to = {`/task/${task._id}`}><Card.Title>{task.title}</Card.Title></Link>
                     <Card.Text>Description: {task.description}</Card.Text>
                     <Card.Text> {formatDate(task.date)}</Card.Text>
                     <Button

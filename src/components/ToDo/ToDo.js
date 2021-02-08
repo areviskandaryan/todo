@@ -26,7 +26,7 @@ class ToDo extends Component {
             })
             .then(async (res) => {
                 const response = await (res.json())
-                if (res.status >= 400 && res.status <= 500) {
+                if (res.status >= 400 && res.status <= 599) {
                     if (response.error) {
                         throw response.error
                     } else {
@@ -53,7 +53,7 @@ class ToDo extends Component {
             })
             .then(async (res) => {
                 const response = await (res.json())
-                if (res.status >= 400 && res.status <= 500) {
+                if (res.status >= 400 && res.status <= 599) {
                     if (response.error) {
                         throw response.error
                     } else {
@@ -82,7 +82,7 @@ class ToDo extends Component {
             })
             .then(async (res) => {
                 const response = await (res.json())
-                if (res.status >= 400 && res.status <= 500) {
+                if (res.status >= 400 && res.status <= 599) {
                     if (response.error) {
                         throw response.error
                     } else {
@@ -131,7 +131,7 @@ class ToDo extends Component {
             })
             .then(async (res) => {
                 const response = await (res.json())
-                if (res.status >= 400 && res.status <= 500) {
+                if (res.status >= 400 && res.status <= 599) {
                     if (response.error) {
                         throw response.error
                     } else {
@@ -201,7 +201,7 @@ class ToDo extends Component {
             })
             .then(async (res) => {
                 const response = await (res.json())
-                if (res.status >= 400 && res.status <= 500) {
+                if (res.status >= 400 && res.status <= 599) {
                     if (response.error) {
                         throw response.error
                     } else {
@@ -244,7 +244,7 @@ class ToDo extends Component {
             )
         })
         return (
-            <>
+            <div>
                 <h1>ToDo List</h1>
                 <Container>
                     <Row className="justify-content-center">
@@ -312,7 +312,7 @@ class ToDo extends Component {
                         onReplaseEditTask={this.handleReplaseEditTask}
                     />
                 }
-            </>
+            </div>
         )
     }
 }
