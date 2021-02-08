@@ -1,4 +1,3 @@
-
 * {
     margin:0;
     padding: 0;
@@ -9,6 +8,7 @@
 .link{
     color:white;
     display:block;
+    text-align:center;
 }
 
 .link:hover{

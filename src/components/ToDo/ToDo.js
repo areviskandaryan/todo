@@ -245,7 +245,7 @@ class ToDo extends Component {
         })
         return (
             <>
-                <h2>Add new task</h2>
+                <h1>ToDo List</h1>
                 <Container>
                     <Row className="justify-content-center">
                         <Col>
