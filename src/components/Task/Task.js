@@ -4,6 +4,7 @@ import styles from "./Task.module.css";
 import {Button, Card} from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
+import {formatDate} from "../../helpers/utils";
 
 
 
@@ -28,10 +29,14 @@ class Task extends PureComponent {
                     />
                     <Card.Title>{task.title}</Card.Title>
                     <Card.Text>Description: {task.description}</Card.Text>
+                    <Card.Text> {formatDate(task.date)}</Card.Text>
                     <Button
                         variant="warning"
                         className="m-1"
-                        onClick={() => onEdit(task)}
+                        onClick={() => {
+                            onEdit(task)
+                        }
+                        }
                         disabled={disabled}
                     >
                         <FontAwesomeIcon icon={faEdit} />

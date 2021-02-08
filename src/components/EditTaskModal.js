@@ -1,6 +1,9 @@
 import React, {Component} from "react";
 import PropTypes from 'prop-types';
 import {Button, FormControl, Modal} from "react-bootstrap";
+import DatePicker from "react-datepicker";
+import {formatDate} from "../helpers/utils";
+
 
 class EditTaskModal extends Component {
 
@@ -9,6 +12,7 @@ class EditTaskModal extends Component {
         this.state = {
             title: props.editedTask.title,
             description: props.editedTask.description,
+            date: new Date(props.editedTask.date),
         }
 
     };
@@ -31,13 +35,20 @@ class EditTaskModal extends Component {
         const description = this.state.description.trim();
         if (title) {
             const newTask = {
-                _id:editedTask._id,
+                _id: editedTask._id,
                 title,
                 description,
+                date:formatDate(this.state.date.toISOString())
             };
             onReplaseEditTask(newTask);
         }
     };
+
+    handleChangeDate = (e) => {
+        this.setState({
+            date: e || new Date(),
+        })
+    }
 
     render() {
         const {title, description} = this.state;
@@ -75,6 +86,12 @@ class EditTaskModal extends Component {
                         onChange={this.handleChange}
 
                     />
+
+                    <DatePicker
+                        minDate={new Date()}
+                        selected={this.state.date}
+                        onChange={this.handleChangeDate}
+                    />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
@@ -92,9 +109,9 @@ class EditTaskModal extends Component {
 }
 
 EditTaskModal.propTypes = {
-    editedTask:PropTypes.object.isRequired,
-    onClose:PropTypes.func.isRequired,
-    onReplaseEditTask:PropTypes.func.isRequired,
+    editedTask: PropTypes.object.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onReplaseEditTask: PropTypes.func.isRequired,
 }
 
 export default EditTaskModal;
