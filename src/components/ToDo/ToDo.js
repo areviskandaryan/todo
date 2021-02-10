@@ -4,6 +4,7 @@ import {Container, Row, Col, Button} from 'react-bootstrap';
 import Confirm from "../Confirm/Confirm";
 import NewTask from "../NewTask/NewTask";
 import EditTaskModal from "../EditTaskModal";
+import styles from "./ToDo.module.css"
 
 class ToDo extends Component {
 
@@ -101,7 +102,7 @@ class ToDo extends Component {
 
     };
 
-    handleEdit = (editedTask) =>{
+    handleEdit = (editedTask) => {
         this.setState({
             editedTask,
             showEdit: true,
@@ -245,40 +246,44 @@ class ToDo extends Component {
         })
         return (
             <div>
-                <h1>ToDo List</h1>
+                <h1 className={styles.title}>ToDo List</h1>
                 <Container>
                     <Row className="justify-content-center">
-                        <Col>
+                        <Col xs={12} sm={6} md={4} lg={3} xl={2}>
                             <Button
                                 variant="primary"
                                 onClick={this.toggleShowConfirmTask}
+                                className={styles.button}
 
                             >
                                 Add New task
                             </Button>
                         </Col>
-                        <Col>
+                        <Col xs={12} sm={6} md={4} lg={3} xl={2}>
                             <Button
                                 variant="warning"
                                 onClick={this.selectConfirm}
+                                className={styles.button}
                             >
                                 Select All
                             </Button>
                         </Col>
-                        <Col>
+                        <Col xs={12} sm={6} md={4} lg={3} xl={2}>
                             <Button
                                 variant="warning"
                                 onClick={this.deselectTasks}
                                 disabled={!selectedTasks.size}
+                                className={styles.button}
                             >
                                 Deselect All
                             </Button>
                         </Col>
-                        <Col>
+                        <Col xs={12} sm={6} md={4} lg={3} xl={2}>
                             <Button
                                 variant="danger"
                                 disabled={!selectedTasks.size}
                                 onClick={this.toggleConfirm}
+                                className={styles.button}
                             >
                                 Remove selected
                             </Button>

@@ -1,7 +1,16 @@
 .card {
-    margin:10px 0;
+    margin: 10px 0;
+    height: calc(100% - 20px);
 }
 
-.selected{
-    border:1px solid #f00;
+.selected {
+    border: 1px solid #f00;
+}
+
+.description {
+    min-height: 140px;
+}
+
+.title {
+    min-height: 45px;
 }
