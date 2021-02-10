@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component,createRef} from "react";
 import styles from "./NewTask.module.css";
 //import {v4 as uuidv4} from "uuid"
 import {formatDate} from "../../helpers/utils";
@@ -9,12 +9,19 @@ import "react-datepicker/dist/react-datepicker.css";
 
 
 class NewTask extends Component {
-
-    state = {
+constructor(props) {
+    super(props);
+    this.state = {
         title: "",
         description: "",
         date: new Date(),
     };
+    this.myRef = createRef();
+}
+
+componentDidMount() {
+    this.myRef.current.focus();
+}
 
     handleChange = ({target: {value, name}}) => {
         this.setState({
@@ -73,6 +80,7 @@ class NewTask extends Component {
                         value={title}
                         onChange={this.handleChange}
                         onKeyDown={this.handleKeyDown}
+                        ref = {this.myRef}
 
                     />
                     <FormControl
