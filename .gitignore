@@ -6,6 +6,7 @@
 .pnp.js
 .eslintcache
 .idea/
+debug.log
 
 # testing
 /coverage
