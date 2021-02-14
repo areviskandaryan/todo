@@ -1,37 +1,40 @@
-.wrapper{
-    margin:100px auto;
-    max-width: 450px;
+.wrapper {
+    margin: 60px auto;
+    max-width: 400px;
 }
 
-.form{
-    border: 1px solid darkgrey;
-
+.form {
+    border: 4px solid darkgrey;
     padding: 30px 50px;
-    background-color: #fff;
 }
-.container{
+
+.container {
     display: flex;
     flex-direction: column;
-
 }
 
-.submit{
-    margin:20px auto;
+
+.submit {
+    margin: 20px auto;
+    padding: 7px;
     display: block;
-    width:200px;
-    border:none;
+    width: 60%;
     border-radius: 10px;
-    padding:10px;
     background-color: #344a72;
     color: #fff;
 }
 
 
-.error{
-    color:red;
+.error {
+    color: red;
 }
 
-.response{
-    color:#344a72;
-    font-weight:bold;
+.response {
+    color: #344a72;
+    font-weight: bold;
 }
+
+.invalidField {
+    border: 1px solid red;
+}
+

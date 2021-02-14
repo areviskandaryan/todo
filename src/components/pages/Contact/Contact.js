@@ -4,60 +4,43 @@ import styles from "./Contact.module.css"
 
 
 export default function Contact() {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [message, setMessage] = useState("");
-    const [error, setError] = useState({
-        errorName: "",
-        errorEmail: "",
-        errorMessage: ""
+    const [values, setValues] = useState({
+        name: "",
+        email: "",
+        message: ""
     });
-    const[response,setResponse] = useState("");
+    const [errors, setError] = useState({
+        name: "",
+        email: "",
+        message: ""
+    });
+    const [response, setResponse] = useState("");
 
-    const handleChangeName = ({target: {value}}) => {
+
+    const handleChangeValue = ({target: {value, name}}) => {
         if (!value.trim()) {
-            setError({...error, errorName: "This field can't be empty."})
-        } else if (value.trim().length < 5) {
-            setError({...error, errorName: "Minimum 5 characters."})
+            setError({...errors, [name]: "This field can't be empty."})
+        } else if (value.trim().length < 5 && name !== "email") {
+            setError({...errors, [name]: "Minimum 5 characters."})
         } else {
-            setError({...error, errorName: ""})
+            setError({...errors, [name]: ""})
         }
-        setName(value);
+
+        if (name === "email" && value.trim() && !isValidEmail(value.trim())) {
+            setError({...errors, [name]: "Please enter a valid email."})
+        }
+
+        setValues({...values, [name]: value.trim()});
+
     }
 
-
-    const handleChangeEmail = ({target: {value}}) => {
-        if (!value.trim()) {
-            setError({...error, errorEmail: "This field can't be empty."})
-        } else if (!isValidEmail(value.trim())) {
-            setError({...error, errorEmail: "Please enter a valid email."})
-        } else {
-            setError({...error, errorEmail: ""})
-        }
-        setEmail(value);
-    }
-
-
-    const handleChangeMessage = ({target: {value}}) => {
-        if (!value.trim()) {
-            setError({...error, errorMessage: "This field can't be empty."})
-        } else {
-            setError({...error, errorMessage: ""})
-        }
-        setMessage(value);
-    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = {
-            name,
-            email,
-            message
-        };
         fetch("http://localhost:3001/form",
             {
                 method: "POST",
-                body: JSON.stringify(data),
+                body: JSON.stringify(values),
                 headers: {
                     "Content-type": "application/json"
                 }
@@ -71,39 +54,68 @@ export default function Contact() {
                         throw new Error("Unable to submit your request. Please, try again later")
                     }
                 }
+
+                setValues({
+                    name: "",
+                    email: "",
+                    message: ""
+                })
                 setResponse("YOUR MESSAGE SENT");
             })
             .catch((error) => console.log("err", error))
     }
+
+
     return (
         <div>
             <div className={styles.wrapper}>
-                <h2>Contact</h2>
-                {response?<p className = {styles.response}>{response}</p>:null}
+                <h2>Contact us</h2>
+                {response ? <p className={styles.response}>{response}</p> : null}
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <div className={styles.container}>
-                        <label>Name</label>
-                        <input name="name" type="text" value={name} onChange={handleChangeName}/>
+                        <label htmlFor="name">Name</label>
+                        <input
+                            name="name"
+                            id="name"
+                            type="text"
+                            value={values.name}
+                            onChange={handleChangeValue}
+                            className={errors.name ? styles.invalidField : ""}
+                        />
                     </div>
-                    {error.errorName ? <p className={styles.error}>{error.errorName}</p> : null}
+                    {errors.name ? <p className={styles.error}>{errors.name}</p> : null}
                     <div className={styles.container}>
-                        <label>Email</label>
-                        <input name="email" value={email} onChange={handleChangeEmail}/>
+                        <label htmlFor="email">Email</label>
+                        <input
+                            name="email"
+                            id="email"
+                            value={values.email}
+                            onChange={handleChangeValue}
+                            className={errors.email ? styles.invalidField : ""}
+                        />
                     </div>
-                    {error.errorEmail ? <p className={styles.error}>{error.errorEmail}</p> : null}
+                    {errors.email ? <p className={styles.error}>{errors.email}</p> : null}
                     <div className={styles.container}>
-                        <label>Message</label>
-                        <textarea rows={10} cols={30} value={message} onChange={handleChangeMessage}/>
+                        <label htmlFor="message">Message</label>
+                        <textarea
+                            rows={8}
+                            cols={20}
+                            name="message"
+                            id="message"
+                            value={values.message}
+                            onChange={handleChangeValue}
+                            className={errors.message ? styles.invalidField : ""}
+                        />
                     </div>
-                    {error.errorMessage ? <p className={styles.error}>{error.errorMessage}</p> : null}
+                    {errors.message ? <p className={styles.error}>{errors.message}</p> : null}
 
                     <button
                         className={styles.submit}
                         disabled={
-                            error.errorName || !name
-                            || error.errorEmail || !email
-                            || error.errorMessage || !message}>
-                        Submit
+                            errors.name || !values.name
+                            || errors.email || !values.email
+                            || errors.message || !values.message}>
+                        Send
                     </button>
                 </form>
             </div>
