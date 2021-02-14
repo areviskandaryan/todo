@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, createRef} from "react";
 import PropTypes from 'prop-types';
 import {Button, FormControl, Modal} from "react-bootstrap";
 import DatePicker from "react-datepicker";
@@ -14,9 +14,12 @@ class EditTaskModal extends Component {
             description: props.editedTask.description,
             date: new Date(props.editedTask.date),
         }
-
+        this.ref = createRef();
     };
 
+    componentDidMount() {
+        this.ref.current.focus();
+    }
     handleChange = ({target: {value, name}}) => {
         this.setState({
             [name]: value,
@@ -74,7 +77,7 @@ class EditTaskModal extends Component {
                         value={title}
                         onChange={this.handleChange}
                         onKeyDown={this.handleKeyDown}
-
+                        ref = {this.ref}
                     />
                     <FormControl
                         className='mb-2'
