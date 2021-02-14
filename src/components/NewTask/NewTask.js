@@ -16,11 +16,11 @@ constructor(props) {
         description: "",
         date: new Date(),
     };
-    this.myRef = createRef();
+    this.ref = createRef();
 }
 
 componentDidMount() {
-    this.myRef.current.focus();
+    this.ref.current.focus();
 }
 
     handleChange = ({target: {value, name}}) => {
@@ -80,7 +80,7 @@ componentDidMount() {
                         value={title}
                         onChange={this.handleChange}
                         onKeyDown={this.handleKeyDown}
-                        ref = {this.myRef}
+                        ref = {this.ref}
 
                     />
                     <FormControl
