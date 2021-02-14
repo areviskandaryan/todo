@@ -5,9 +5,8 @@ import {BrowserRouter as Router, Switch,Route, Redirect} from "react-router-dom"
 import About from "./components/pages/About/About";
 import NotFound from "./components/pages/NotFound/NotFound";
 import Contact from "./components/pages/Contact/Contact";
-import NavMenu from "./components/NavMenu/Navbar.js";
-
-
+import NavMenu from "./components/NavMenu/NavMenu";
+import SingleTask from "./components/pages/SingleTask/SingleTask";
 
 
 function App() {
@@ -31,6 +30,7 @@ function App() {
                 <Route exact path="/not-found">
                     <NotFound />
                 </Route>
+                <Route exact path = "/task/:taskId" component = { SingleTask } />
                 <Redirect to="/not-found"/>
 
             </Switch>

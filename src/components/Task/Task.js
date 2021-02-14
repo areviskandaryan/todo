@@ -1,12 +1,11 @@
-import React, { PureComponent } from "react";
+import React, {PureComponent} from "react";
 import PropTypes from 'prop-types';
 import styles from "./Task.module.css";
-import { Button, Card } from "react-bootstrap";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
-import { formatDate } from "../../helpers/utils";
-import { Link } from "react-router-dom";
-
+import {Button, Card} from "react-bootstrap";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faTrash, faEdit} from '@fortawesome/free-solid-svg-icons'
+import {formatDate, textCutter} from "../../helpers/utils";
+import {Link} from "react-router-dom";
 
 
 class Task extends PureComponent {
@@ -28,8 +27,10 @@ class Task extends PureComponent {
                         checked={checked}
                         onChange={this.selectTasks}
                     />
-                    <Card.Title>{task.title}</Card.Title>
-                    <Card.Text>Description: {task.description}</Card.Text>
+                    <Link to={`/task/${task._id}`}><Card.Title
+                        className={styles.title}>{textCutter(task.title, 15)}</Card.Title></Link>
+                    <Card.Text
+                        className={styles.description}>Description: {textCutter(task.description, 60)}</Card.Text>
                     <Card.Text> {formatDate(task.date)}</Card.Text>
                     <Button
                         variant="warning"
@@ -40,7 +41,7 @@ class Task extends PureComponent {
                         }
                         disabled={disabled}
                     >
-                        <FontAwesomeIcon icon={faEdit} />
+                        <FontAwesomeIcon icon={faEdit}/>
                     </Button>
                     <Button
                         variant="danger"
@@ -48,7 +49,7 @@ class Task extends PureComponent {
                         onClick={() => onDelete(task._id)}
                         disabled={disabled}
                     >
-                        <FontAwesomeIcon icon={faTrash} />
+                        <FontAwesomeIcon icon={faTrash}/>
                     </Button>
                 </Card.Body>
             </Card>
