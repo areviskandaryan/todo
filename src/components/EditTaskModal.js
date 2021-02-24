@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import {Button, FormControl, Modal} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import {formatDate} from "../helpers/utils";
+import {connect} from "react-redux";
+import { editTask} from "../store/actions";
+
 
 
 class EditTaskModal extends Component {
@@ -33,7 +36,7 @@ class EditTaskModal extends Component {
     };
 
     handleEditSave = () => {
-        const {onReplaseEditTask, editedTask} = this.props;
+        const {editTask, editedTask} = this.props;
         const title = this.state.title.trim();
         const description = this.state.description.trim();
         if (title) {
@@ -43,7 +46,7 @@ class EditTaskModal extends Component {
                 description,
                 date:formatDate(this.state.date.toISOString())
             };
-            onReplaseEditTask(newTask);
+            editTask(newTask);
         }
     };
 
@@ -114,7 +117,10 @@ class EditTaskModal extends Component {
 EditTaskModal.propTypes = {
     editedTask: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
-    onReplaseEditTask: PropTypes.func.isRequired,
 }
 
-export default EditTaskModal;
+const mapDispatchToProps = {
+    editTask:editTask,
+}
+
+export default connect(null, mapDispatchToProps)(EditTaskModal);
