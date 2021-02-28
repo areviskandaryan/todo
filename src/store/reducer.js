@@ -1,9 +1,15 @@
+
+
 const initialState = {
     tasks: [],
+    task: null,
     showNewTask: false,
     showConfirm: false,
-    showEdit:false,
-    loading:false,
+    showEdit: false,
+    showEditSingleTaskModal: false,
+    loading: false,
+    successMessage: null,
+    errorMessage: null,
 };
 
 export function reducer(state = initialState, action) {
@@ -13,6 +19,15 @@ export function reducer(state = initialState, action) {
                 ...state,
                 tasks: action.tasks,
                 loading: false,
+
+            }
+        }
+        case "GET_TASK": {
+            return {
+                ...state,
+                task: action.task,
+                loading: false,
+
             }
         }
         case "ADD_TASK": {
@@ -21,25 +36,42 @@ export function reducer(state = initialState, action) {
                 tasks: [...state.tasks, action.newTask],
                 showNewTask: true,
                 loading: false,
+                successMessage: 'Task created successfully!!!',
+
             }
         }
         case "PENDING": {
             return {
                 ...state,
                 showNewTask: false,
-                showConfirm:false,
-                showEdit:false,
-                loading: true
+                showConfirm: false,
+                showEditSingleTaskModal: false,
+                showEdit: false,
+                loading: true,
+                successMessage: null,
+                errorMessage: null,
+
+
 
             }
         }
 
         case "DELETE_TASK": {
+            if (action.from === "singleTask") {
+                return ({
+                    ...state,
+                    task: null,
+                    loading: false,
+                    successMessage: 'Task deleted successfully!!!'
+
+                })
+            }
             const filteredTask = state.tasks.filter(task => action.taskId !== task._id);
             return {
                 ...state,
                 tasks: filteredTask,
                 loading: false,
+                successMessage: 'Task deleted successfully!!!'
             }
         }
 
@@ -53,11 +85,24 @@ export function reducer(state = initialState, action) {
                 tasks: removeSelectedTasks,
                 showConfirm: true,
                 loading: false,
+                successMessage: 'Tasks deleted successfully!!!'
             }
         }
 
 
         case "EDIT_TASK": {
+
+            if (action.from === "singleTask") {
+
+                return ({
+                    ...state,
+                    task: action.editedTask,
+                    loading: false,
+                    showEditSingleTaskModal: true,
+                    successMessage: 'Task edited successfully!!!'
+
+                })
+            }
             const tasksArr = state.tasks.map((task) => {
                 if (task._id !== action.editedTask._id) {
                     return task;
@@ -67,9 +112,19 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 tasks: tasksArr,
-                showEdit:true,
+                showEdit: true,
                 loading: false,
+                successMessage: 'Task edited successfully!!!'
             }
+        }
+        case "ERROR": {
+            return (
+                {
+                    ...state,
+                    loading: false,
+                    errorMessage: action.error,
+                }
+            )
         }
 
         default:

@@ -22,7 +22,6 @@ export function request(url, method = "GET", body) {
             return response;
 
         })
-        .catch((error) => console.log("err", error))
 
 
 }

@@ -7,6 +7,7 @@ import EditTaskModal from "../EditTaskModal";
 import styles from "./ToDo.module.css";
 import {connect} from "react-redux";
 import {getTasks, deleteSelectedTasks} from "../../store/actions";
+import Search from "../Search/Search";
 
 
 class ToDo extends Component {
@@ -133,6 +134,11 @@ class ToDo extends Component {
             <div>
                 <h1 className={styles.title}>ToDo List</h1>
                 <Container>
+                    <Row>
+                        <Col>
+                            <Search/>
+                        </Col>
+                    </Row>
                     <Row className="justify-content-center">
                         <Col xs={12} sm={6} md={4} lg={3} xl={2}>
                             <Button
@@ -219,9 +225,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     getTasks: getTasks,
-    deleteSelectedTasks:deleteSelectedTasks,
+    deleteSelectedTasks: deleteSelectedTasks,
 }
-
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ToDo);

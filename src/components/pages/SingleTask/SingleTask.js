@@ -4,116 +4,57 @@ import {formatDate} from "../../../helpers/utils";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
 import EditTaskModal from "../../EditTaskModal";
+import {getTask, deleteTask} from "../../../store/actions";
+import {connect} from "react-redux";
 
 
-export default class SingleTask extends Component {
+class SingleTask extends Component {
 
     state = {
-        task: null,
-        showEditModal:false,
+        showEditSingleTaskModal: false,
     }
 
     componentDidMount() {
         const taskId = this.props.match.params.taskId;
-        fetch(`http://localhost:3001/task/${taskId}`,
-            {
-                method: "GET",
-                headers: {
-                    "Content-type": "application/json"
-                },
-            })
-            .then(async (res) => {
-                const response = await (res.json())
-                if (res.status >= 400 && res.status <= 599) {
-                    if (response.error) {
-                        throw response.error
-                    } else {
-                        throw new Error("Something went wrong")
-                    }
-                }
-                this.setState({task: response});
-            })
-            .catch((error) => console.log(error))
-
+        this.props.getTask(taskId);
     }
-    handleDeleteTask = ()=>{
-        const { task } = this.state;
-        fetch(`http://localhost:3001/task/${task._id}`,
-            {
-                method: "DELETE",
-                headers: {
-                    "Content-type": "application/json"
-                },
-            })
-            .then(async (res) => {
-                const response = await (res.json())
-                if (res.status >= 400 && res.status <= 599) {
-                    if (response.error) {
-                        throw response.error
-                    } else {
-                        throw new Error("Something went wrong")
-                    }
-                }
 
-                this.props.history.push('/home')
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.showEditSingleTaskModal && !prevProps.showEditSingleTaskModal) {
+            this.setState({
+                showEditSingleTaskModal: false,
             })
-            .catch((error) => console.log(error))
+        }
 
     }
 
-
-    handleReplaseEditTask = (editedTask)=>{
-        const { showEditModal } = this.state;
-        fetch(`http://localhost:3001/task/${editedTask._id}`,
-            {
-                method: "PUT",
-                body:JSON.stringify(editedTask),
-                headers: {
-                    "Content-type": "application/json"
-                },
-            })
-            .then(async (res) => {
-                const response = await (res.json())
-                if (res.status >= 400 && res.status <= 599) {
-                    if (response.error) {
-                        throw response.error
-                    } else {
-                        throw new Error("Something went wrong")
-                    }
-                }
-
-              this.setState({
-                  task:response,
-                  showEditModal:!showEditModal,
-              })
-            })
-            .catch((error) => console.log(error))
-
+    handleDeleteTask = () => {
+        const {deleteTask, task} = this.props;
+        deleteTask(task._id, "singleTask");
     }
 
-    toggleShowEditTask = ()=>{
-        const { showEditModal } = this.state;
+
+    toggleShowEditTask = () => {
+        const {showEditSingleTaskModal} = this.state;
         this.setState({
-            showEditModal:!showEditModal,
+            showEditSingleTaskModal: !showEditSingleTaskModal,
         })
     }
 
     render() {
-        const {task, showEditModal} = this.state;
+        const {showEditSingleTaskModal} = this.state;
+        const {task} = this.props;
         return (
             <div className="mt-5">
-            <Container >
-                <Row>
-                    <Col xs={12}>
-                        {
-                            task === null ?
-                                (
-                                    <div className="spinner-border m-5" role="status">
-                                        <span className="sr-only">Loading...</span>
-                                    </div>
-                                ) :
-                                (
-                                    <Card className="text-center">
+                <Container>
+                    <Row>
+                        <Col xs={12}>
+                            {
+                                (task === null) ?
+                                    (
+                                        <p>Task data not exists!</p>
+                                    ) :
+                                    (<Card className="text-center">
                                         <Card.Body>
                                             <Card.Title>{task.title}</Card.Title>
                                             <Card.Text>Description: {task.description}</Card.Text>
@@ -134,19 +75,18 @@ export default class SingleTask extends Component {
                                                 <FontAwesomeIcon icon={faTrash}/>
                                             </Button>
                                         </Card.Body>
-                                    </Card>
-                                )
-                        }
-                    </Col>
-                </Row>
-            </Container>
+                                    </Card>)
+                            }
+                        </Col>
+                    </Row>
+                </Container>
 
                 {
-                    showEditModal &&
+                    showEditSingleTaskModal &&
                     <EditTaskModal
                         editedTask={task}
                         onClose={this.toggleShowEditTask}
-                        onReplaseEditTask={this.handleReplaseEditTask}
+                        from="singleTask"
                     />
                 }
             </div>
@@ -155,3 +95,18 @@ export default class SingleTask extends Component {
 
     }
 }
+
+const mapDispatchToProps = {
+    getTask,
+    deleteTask,
+
+}
+
+const mapStateToProps = (state) => {
+    return {
+        task: state.task,
+        showEditSingleTaskModal: state.showEditSingleTaskModal
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleTask);
