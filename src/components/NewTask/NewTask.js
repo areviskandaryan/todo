@@ -1,27 +1,29 @@
-import React, {Component,createRef} from "react";
+import React, {Component, createRef} from "react";
 import styles from "./NewTask.module.css";
-//import {v4 as uuidv4} from "uuid"
 import {formatDate} from "../../helpers/utils";
 import PropTypes from 'prop-types';
 import {Button, FormControl, Modal} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import {connect} from "react-redux"
+import {addTask} from "../../store/actions";
 
 
 class NewTask extends Component {
-constructor(props) {
-    super(props);
-    this.state = {
-        title: "",
-        description: "",
-        date: new Date(),
-    };
-    this.ref = createRef();
-}
+    constructor(props) {
+        super(props);
+        this.state = {
+            title: "",
+            description: "",
+            date: new Date(),
+        };
+        this.ref = createRef();
+    }
 
-componentDidMount() {
-    this.ref.current.focus();
-}
+    componentDidMount() {
+        this.ref.current.focus();
+    }
+
 
     handleChange = ({target: {value, name}}) => {
         this.setState({
@@ -36,7 +38,7 @@ componentDidMount() {
     };
 
     handleSubmitAdd = () => {
-        const {onAdd} = this.props;
+        const {addTask} = this.props;
         const title = this.state.title.trim();
         const description = this.state.description.trim();
         const {date} = this.state;
@@ -46,7 +48,7 @@ componentDidMount() {
                 description,
                 date: formatDate(date.toISOString()),
             };
-            onAdd(newTask);
+            addTask(newTask);
 
         }
     };
@@ -80,7 +82,7 @@ componentDidMount() {
                         value={title}
                         onChange={this.handleChange}
                         onKeyDown={this.handleKeyDown}
-                        ref = {this.ref}
+                        ref={this.ref}
 
                     />
                     <FormControl
@@ -122,8 +124,15 @@ componentDidMount() {
 }
 
 NewTask.propTypes = {
-    onAdd: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
 };
-export default NewTask;
+
+const mapDispatchToProps ={
+    addTask:  addTask,
+}
+
+
+
+
+export default connect(null, mapDispatchToProps)(NewTask);

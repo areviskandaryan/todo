@@ -6,7 +6,8 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faTrash, faEdit} from '@fortawesome/free-solid-svg-icons'
 import {formatDate, textCutter} from "../../helpers/utils";
 import {Link} from "react-router-dom";
-
+import {connect} from "react-redux";
+import { deleteTask} from "../../store/actions";
 
 class Task extends PureComponent {
 
@@ -17,7 +18,7 @@ class Task extends PureComponent {
     };
 
     render() {
-        const {task, onDelete, disabled, checked, onEdit} = this.props;
+        const {task, deleteTask, disabled, checked, onEdit} = this.props;
 
         return (
             <Card className={`${styles.card} ${checked ? styles.selected : ""}`}>
@@ -46,7 +47,7 @@ class Task extends PureComponent {
                     <Button
                         variant="danger"
                         className="m-1"
-                        onClick={() => onDelete(task._id)}
+                        onClick={() => deleteTask(task._id)}
                         disabled={disabled}
                     >
                         <FontAwesomeIcon icon={faTrash}/>
@@ -60,11 +61,12 @@ class Task extends PureComponent {
 Task.propTypes = {
     task: PropTypes.object.isRequired,
     selectedTasks: PropTypes.object.isRequired,
-    onDelete: PropTypes.func.isRequired,
     onSelect: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
     checked: PropTypes.bool.isRequired,
 };
+const mapDispatchToProps = {
+    deleteTask:deleteTask,
+}
 
-
-export default Task;
+export default connect(null, mapDispatchToProps)(Task);

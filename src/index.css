@@ -14,3 +14,7 @@ code {
 .react-datepicker-wrapper {
   width: 100%;
 }
+
+.dropdown-toggle {
+  width:100px
+}

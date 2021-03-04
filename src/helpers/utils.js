@@ -14,7 +14,7 @@ export function textCutter(string = "", maxLength) {
 }
 
 export function isValidEmail(str) {
-    const regLetters = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    const regLetters = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
     return regLetters.test(str);
 }
