@@ -14,30 +14,22 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {history} from "./helpers/history"
 
+const toastProps = {
+    position: "bottom-left",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true
+};
 
 function App(props) {
     useEffect(()=>{
         if (props.successMessage){
-            toast.success(props.successMessage,  {
-                position: "bottom-left",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            })
+            toast.success(props.successMessage,toastProps)
         }
         if (props.errorMessage){
-            toast.error(props.errorMessage, {
-                position: "bottom-left",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            } )
+            toast.error(props.errorMessage,toastProps)
         }
 
 

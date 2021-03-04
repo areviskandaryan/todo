@@ -138,7 +138,6 @@ function Search(props) {
                     variant="outline-secondary"
                     title={sort.value === "" ? "Sort" : textCutter(sort.label, 6)}
                     id="input-group-dropdown-2"
-                    style={{width: "100px"}}
                 >
                     {
                         sortOptions.map((option, index) => {
@@ -161,6 +160,7 @@ function Search(props) {
                     <Button
                         variant="outline-primary"
                         onClick={handleSubmit}
+                        style={{width: "100px"}}
                     >
                         Search
                     </Button>

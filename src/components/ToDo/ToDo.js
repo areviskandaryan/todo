@@ -134,7 +134,7 @@ class ToDo extends Component {
             <div>
                 <h1 className={styles.title}>ToDo List</h1>
                 <Container>
-                    <Row>
+                    <Row className="mb-5">
                         <Col>
                             <Search/>
                         </Col>
