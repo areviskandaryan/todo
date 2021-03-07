@@ -4,6 +4,8 @@ import {InputGroup, FormControl, DropdownButton, Dropdown, Button} from "react-b
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {textCutter} from "../../helpers/utils";
+import { formatDate } from "../../helpers/utils";
+import {getTasks} from "../../store/actions";
 
 
 const statusOptions = [
@@ -96,10 +98,16 @@ function Search(props) {
 
     }
     const handleSubmit = () => {
-        console.log('search', search);
-        console.log('sort', sort);
-        console.log('status', status);
-        console.log('dates', dates);
+        const params = {};
+        search && (params.search =search);
+        sort.value && (params.sort =sort.value);
+        status.value && (params.status =status.value);
+        for (let key in dates) {
+            if (dates[key]) {
+                params[key] = formatDate(dates[key].toISOString());
+            }
+        }
+        props.getTasks(params);
     }
 
     return (
@@ -186,5 +194,7 @@ function Search(props) {
         </div>
     )
 }
-
-export default connect()(Search);
+const mapDispatchToProps={
+    getTasks,
+}
+export default connect(null,mapDispatchToProps)(Search);
