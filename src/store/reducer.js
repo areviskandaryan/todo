@@ -50,9 +50,6 @@ export function reducer(state = initialState, action) {
                 loading: true,
                 successMessage: null,
                 errorMessage: null,
-
-
-
             }
         }
 
@@ -115,6 +112,15 @@ export function reducer(state = initialState, action) {
                 showEdit: true,
                 loading: false,
                 successMessage: 'Task edited successfully!!!'
+            }
+        }
+
+        case "SEND_MESSAGE": {
+            return {
+                ...state,
+                loading: false,
+                successMessage: 'YOUR MESSAGE SENT!!!',
+
             }
         }
         case "ERROR": {
