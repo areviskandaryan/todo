@@ -1,11 +1,13 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {connect} from "react-redux";
 import {InputGroup, FormControl, DropdownButton, Dropdown, Button} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {textCutter} from "../../helpers/utils";
-import { formatDate } from "../../helpers/utils";
+import {formatDate} from "../../helpers/utils";
 import {getTasks} from "../../store/actions";
+import {history} from "../../helpers/history";
+import queryString from 'query-string';
 
 
 const statusOptions = [
@@ -93,20 +95,34 @@ function Search(props) {
         complete_gte: null
     });
 
-    const handleChangeDate = (value, name) => {
-        setDates({...dates, [name]: value})
 
-    }
-    const handleSubmit = () => {
+    const getFilter = () => {
         const params = {};
-        search && (params.search =search);
-        sort.value && (params.sort =sort.value);
-        status.value && (params.status =status.value);
+        search && (params.search = search);
+        sort.value && (params.sort = sort.value);
+        status.value && (params.status = status.value);
         for (let key in dates) {
             if (dates[key]) {
                 params[key] = formatDate(dates[key].toISOString());
             }
         }
+        return params;
+    };
+
+    const params = getFilter();
+
+    useEffect(() => {
+        const queryParams = queryString.stringify(params);
+        history.replace({search: queryParams})
+    }, [params])
+
+
+    const handleChangeDate = (value, name) => {
+        setDates({...dates, [name]: value})
+    }
+
+
+    const handleSubmit = () => {
         props.getTasks(params);
     }
 
@@ -194,7 +210,8 @@ function Search(props) {
         </div>
     )
 }
-const mapDispatchToProps={
+
+const mapDispatchToProps = {
     getTasks,
 }
-export default connect(null,mapDispatchToProps)(Search);
+export default connect(null, mapDispatchToProps)(Search);
