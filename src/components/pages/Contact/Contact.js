@@ -1,24 +1,28 @@
-import React, {useState, useEffect} from "react";
-import {isValidEmail} from "../../../helpers/utils";
-import styles from "./Contact.module.css";
+import React, {useState, useEffect, useRef} from "react";
 import {connect} from "react-redux";
 import {sendMessage} from "../../../store/actions"
+import {isValidEmail} from "../../../helpers/utils";
+import {Button, Col, Container, Form, Row} from "react-bootstrap";
+import styles from "./Contact.module.css";
 
 
 function Contact(props) {
     const [values, setValues] = useState({
         name: "",
         email: "",
-        message: ""
+        message: "",
     });
-    const [errors, setError] = useState({
-        name: "",
-        email: "",
-        message: ""
+    const [errors, setErrors] = useState({
+        name: null,
+        email: null,
+        message: null,
     });
 
+    const ref = useRef(null);
+
     useEffect(() => {
-        if (props.successMessage){
+        ref.current.focus();
+        if (props.successMessage) {
             setValues({
                 name: "",
                 email: "",
@@ -26,85 +30,106 @@ function Contact(props) {
             })
         }
 
-    }, [props.successMessage])
+    }, [props.successMessage]);
 
-    const handleChangeValue = ({target: {value, name}}) => {
+
+
+    const handleChange = ({target: {value, name}}) => {
         if (!value.trim()) {
-            setError({...errors, [name]: "This field can't be empty."})
-        } else if (value.trim().length < 5 && name !== "email") {
-            setError({...errors, [name]: "Minimum 5 characters."})
-        } else {
-            setError({...errors, [name]: ""})
+            setErrors({...errors, [name]: "This field can't be empty."});
+        } else if (value.trim().length < 3 && name === "name") {
+            setErrors({...errors, [name]: "Minimum 3 characters."});
+        }else if (value.trim().length >15 && name === "name"){
+            setErrors({...errors, [name]: "Maximum 15 characters."});
+        }
+        else {
+            setErrors({...errors, [name]: ""});
         }
 
         if (name === "email" && value.trim() && !isValidEmail(value.trim())) {
-            setError({...errors, [name]: "Please enter a valid email."})
+            setErrors({...errors, [name]: "Please enter a valid email."});
         }
 
         setValues({...values, [name]: value.trim()});
 
-    }
+    };
 
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = () => {
         props.sendMessage(values);
-    }
+    };
 
 
     return (
-        <div>
-            <div className={styles.wrapper}>
-                <h2>Contact us</h2>
-                <form className={styles.form} onSubmit={handleSubmit}>
-                    <div className={styles.container}>
-                        <label htmlFor="name">Name</label>
-                        <input
-                            name="name"
-                            id="name"
-                            type="text"
-                            value={values.name}
-                            onChange={handleChangeValue}
-                            className={errors.name ? styles.invalidField : ""}
-                        />
-                    </div>
-                    {errors.name ? <p className={styles.error}>{errors.name}</p> : null}
-                    <div className={styles.container}>
-                        <label htmlFor="email">Email</label>
-                        <input
-                            name="email"
-                            id="email"
-                            value={values.email}
-                            onChange={handleChangeValue}
-                            className={errors.email ? styles.invalidField : ""}
-                        />
-                    </div>
-                    {errors.email ? <p className={styles.error}>{errors.email}</p> : null}
-                    <div className={styles.container}>
-                        <label htmlFor="message">Message</label>
-                        <textarea
-                            rows={8}
-                            cols={20}
-                            name="message"
-                            id="message"
-                            value={values.message}
-                            onChange={handleChangeValue}
-                            className={errors.message ? styles.invalidField : ""}
-                        />
-                    </div>
-                    {errors.message ? <p className={styles.error}>{errors.message}</p> : null}
+            <Container>
+                <Row className='justify-content-center'>
+                    <Col xs={7}>
+                        <Form className='mt-5' >
+                            <h2 className={styles.title}>Contact us</h2>
+                            <Form.Group>
+                                <Form.Control
+                                    className={errors.name ? styles.invalid: ''}
+                                    placeholder="Enter name"
+                                    name="name"
+                                    id="name"
+                                    type="text"
+                                    value={values.name}
+                                    onChange={handleChange}
+                                    ref = {ref}
+                                />
+                                <Form.Text className="text-danger">
+                                    {errors.name}
+                                </Form.Text>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Control
+                                    className={errors.email ? styles.invalidField : ""}
+                                    placeholder="Enter email"
+                                    name="email"
+                                    id="email"
+                                    type="email"
+                                    value={values.email}
+                                    onChange={handleChange}
+                                />
+                                <Form.Text className="text-danger">
+                                    {errors.email}
+                                </Form.Text>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Control
+                                    as ="textarea"
+                                    className={errors.message ? styles.invalidField : ""}
+                                    placeholder="Enter message"
+                                    name="message"
+                                    id="message"
+                                    type="text"
+                                    value={values.message}
+                                    onChange={handleChange}
+                                    rows={8}
+                                    cols={20}
+                                />
+                                <Form.Text className="text-danger">
+                                    {errors.message}
+                                </Form.Text>
+                            </Form.Group>
+                            <div className="text-center">
+                                <Button
+                                    variant="secondary"
+                                    onClick = {handleSubmit}
+                                    disabled={
+                                        errors.name || !values.name
+                                        || errors.email || !values.email
+                                        || errors.message || !values.message}
+                                    className={styles.submitButton}
+                                >
+                                    Send
+                                </Button>
+                            </div>
 
-                    <button
-                        className={styles.submit}
-                        disabled={
-                            errors.name || !values.name
-                            || errors.email || !values.email
-                            || errors.message || !values.message}>
-                        Send
-                    </button>
-                </form>
-            </div>
-        </div>
+                        </Form>
+                    </Col>
+                </Row>
+            </Container>
     )
 }
 

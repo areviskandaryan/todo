@@ -1,18 +1,21 @@
 import React, {useEffect} from "react";
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import  ToDo  from "./components/ToDo/ToDo";
 import { Router, Switch,Route, Redirect} from "react-router-dom";
+import { connect } from "react-redux";
+import  ToDo  from "./components/pages/ToDo/ToDo";
+import  Login  from "./components/pages/Login/Login";
+import  Register  from "./components/pages/Register/Register";
 import About from "./components/pages/About/About";
 import NotFound from "./components/pages/NotFound/NotFound";
 import Contact from "./components/pages/Contact/Contact";
 import NavMenu from "./components/NavMenu/NavMenu";
 import SingleTask from "./components/pages/SingleTask/SingleTask";
-import { connect } from "react-redux";
 import Spinner from "./components/Spinner/Spinner";
+import {history} from "./helpers/history";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {history} from "./helpers/history"
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const toastProps = {
     position: "bottom-left",
@@ -34,13 +37,19 @@ function App(props) {
 
 
 
-    },[props.successMessage,props.errorMessage])
+    },[props.successMessage,props.errorMessage]);
 
   return (
     <div >
         <Router history = {history}>
             <NavMenu />
             <Switch>
+                <Route exact path="/register">
+                    <Register />
+                </Route>
+                <Route exact path="/login">
+                    <Login />
+                </Route>
                 <Route exact path="/">
                     <ToDo />
                 </Route>

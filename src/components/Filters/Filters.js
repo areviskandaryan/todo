@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from "react";
-import {ButtonGroup, DropdownButton, Dropdown, Button, Modal} from "react-bootstrap";
 import {textCutter} from "../../helpers/utils";
 import {formatDate} from "../../helpers/utils";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import {ButtonGroup, DropdownButton, Dropdown, Button, Modal} from "react-bootstrap";
+
+
 
 
 const statusOptions = [
@@ -73,11 +75,11 @@ const dateOptions = [
     }
 ];
 
-function Filters(props) {
+export default function Filters(props) {
 
     const [status, setStatus] = useState({
         value: ""
-    })
+    });
 
     const [sort, setSort] = useState({
         value: ''
@@ -97,13 +99,13 @@ function Filters(props) {
             const filteredStatusOption =statusOptions.find((option)=>{
                 return (option.value === filterParams.status)
             });
-           setStatus({...status,...filteredStatusOption})
+           setStatus({...status,...filteredStatusOption});
         }
         if(filterParams && filterParams.sort){
             const filteredSortOption =sortOptions.find((option)=>{
                 return (option.value === filterParams.sort)
             });
-            setSort({...status,...filteredSortOption})
+            setSort({...status,...filteredSortOption});
         }
 
         if (filterParams && Object.keys(filterParams).length >0){
@@ -114,16 +116,16 @@ function Filters(props) {
                if(filteredDate){
                    setDates((dates)=>{
                        return {...dates,[filteredDate]:new Date(filterParams[filteredDate])}
-                   })
+                   });
                }
             }
         }
 
-    },[])
+    },[]);
 
     const handleChangeDate = (value, name) => {
-        setDates({...dates, [name]: value})
-    }
+        setDates({...dates, [name]: value});
+    };
 
     const handleFilters = () => {
         const params = {};
@@ -136,7 +138,7 @@ function Filters(props) {
         }
         handleAddFilters(params);
         onClose();
-    }
+    };
 
     const handleResetFilters = () => {
         setStatus({value: ""});
@@ -147,7 +149,7 @@ function Filters(props) {
             complete_lte: null,
             complete_gte: null,
         });
-    }
+    };
 
     return (
         <Modal
@@ -251,4 +253,3 @@ function Filters(props) {
     )
 }
 
-export default Filters
