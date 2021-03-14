@@ -99,13 +99,13 @@ export default function Filters(props) {
             const filteredStatusOption =statusOptions.find((option)=>{
                 return (option.value === filterParams.status)
             });
-           setStatus({...status,...filteredStatusOption});
+           setStatus({...status,...filteredStatusOption})
         }
         if(filterParams && filterParams.sort){
             const filteredSortOption =sortOptions.find((option)=>{
                 return (option.value === filterParams.sort)
             });
-            setSort({...status,...filteredSortOption});
+            setSort({...status,...filteredSortOption})
         }
 
         if (filterParams && Object.keys(filterParams).length >0){
@@ -116,7 +116,7 @@ export default function Filters(props) {
                if(filteredDate){
                    setDates((dates)=>{
                        return {...dates,[filteredDate]:new Date(filterParams[filteredDate])}
-                   });
+                   })
                }
             }
         }
@@ -124,7 +124,7 @@ export default function Filters(props) {
     },[]);
 
     const handleChangeDate = (value, name) => {
-        setDates({...dates, [name]: value});
+        setDates({...dates, [name]: value})
     };
 
     const handleFilters = () => {
