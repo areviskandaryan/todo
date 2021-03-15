@@ -1,9 +1,11 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {isValidEmail} from "../../../helpers/utils";
-import styles from "./Contact.module.css"
+import styles from "./Contact.module.css";
+import {connect} from "react-redux";
+import {sendMessage} from "../../../store/actions"
 
 
-export default function Contact() {
+function Contact(props) {
     const [values, setValues] = useState({
         name: "",
         email: "",
@@ -14,8 +16,17 @@ export default function Contact() {
         email: "",
         message: ""
     });
-    const [response, setResponse] = useState("");
 
+    useEffect(() => {
+        if (props.successMessage){
+            setValues({
+                name: "",
+                email: "",
+                message: ""
+            })
+        }
+
+    }, [props.successMessage])
 
     const handleChangeValue = ({target: {value, name}}) => {
         if (!value.trim()) {
@@ -37,32 +48,7 @@ export default function Contact() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        fetch("http://localhost:3001/form",
-            {
-                method: "POST",
-                body: JSON.stringify(values),
-                headers: {
-                    "Content-type": "application/json"
-                }
-            })
-            .then(async (res) => {
-                const response = await (res.json())
-                if (res.status >= 400 && res.status <= 599) {
-                    if (response.error) {
-                        throw response.error
-                    } else {
-                        throw new Error("Unable to submit your request. Please, try again later")
-                    }
-                }
-
-                setValues({
-                    name: "",
-                    email: "",
-                    message: ""
-                })
-                setResponse("YOUR MESSAGE SENT");
-            })
-            .catch((error) => console.log("err", error))
+        props.sendMessage(values);
     }
 
 
@@ -70,7 +56,6 @@ export default function Contact() {
         <div>
             <div className={styles.wrapper}>
                 <h2>Contact us</h2>
-                {response ? <p className={styles.response}>{response}</p> : null}
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <div className={styles.container}>
                         <label htmlFor="name">Name</label>
@@ -122,3 +107,14 @@ export default function Contact() {
         </div>
     )
 }
+
+const mapStateToProps = (state) => {
+    return {
+        successMessage: state.successMessage
+    }
+}
+const mapDispatchToProps = {
+    sendMessage
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Contact)

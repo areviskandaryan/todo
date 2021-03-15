@@ -84,3 +84,14 @@ export function editTask(data, from) {
 };
 
 
+export function sendMessage(values) {
+    return (dispatch) => {
+        dispatch({type: actionTypes.PENDING});
+        request(`${apiHost}/form`, "POST", values)
+            .then(() => {
+                dispatch({type: actionTypes.SEND_MESSAGE});
+            })
+            .catch((error) => dispatch({type: actionTypes.ERROR, error: error.message}))
+    }
+
+};
