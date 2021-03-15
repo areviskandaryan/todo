@@ -1,57 +1,67 @@
 import React, {useState, useEffect, useRef} from "react";
 import {connect} from "react-redux";
-import {InputGroup, FormControl, Button} from "react-bootstrap";
+import queryString from 'query-string';
 import {getTasks} from "../../store/actions";
 import {history} from "../../helpers/history";
-import queryString from 'query-string';
+import {formatDate} from "../../helpers/utils";
+import Filters from "../Filters/Filters"
+import {InputGroup, FormControl, Button} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faFilter} from '@fortawesome/free-solid-svg-icons';
-import Filters from "../Filters/Filters"
 
 
 function Search(props) {
 
     const [search, setSearch] = useState("");
     const [showFilterModal, setShowFilterModal] = useState(false);
-    const [filterParams, setFilterParams] = useState(null);
+    const [filterParams, setFilterParams] = useState({});
     const inputEl = useRef(null);
 
     const handleAddFilters = (params) => {
         setFilterParams(params);
-    }
+    };
 
     const getAllParams = () => {
-        const allParams = filterParams ? {...filterParams} : {};
-        search && (allParams.search = search);
-        return allParams;
+        const params = {};
+        const {status, sort, dates} = filterParams;
+        if (Object.keys(filterParams).length) {
+            filterParams.sort.value && (params.sort = sort.value);
+            filterParams.status.value && (params.status = status.value);
+            for (let key in dates) {
+                if (dates[key]) {
+                    params[key] = formatDate(dates[key].toISOString());
+                }
+            }
+        }
+        search && (params.search = search);
+        return params;
     }
 
-    const allParams = getAllParams();
+    const params = getAllParams();
 
 
     const handleSubmit = () => {
-        props.getTasks(allParams);
+        props.getTasks(params);
     }
 
     useEffect(() => {
         inputEl.current.focus();
-    }, [])
+    }, []);
 
 
     useEffect(() => {
-        const queryParams = queryString.stringify(allParams);
+        const queryParams = queryString.stringify(params);
         history.replace({search: queryParams});
-    }, [allParams])
+    }, [params]);
 
 
     const getCountOfFilters = () => {
-        const countOfFilters = (filterParams === null) ? "" : Object.keys(filterParams).length;
-        return countOfFilters
+        return params.search ? Object.keys(params).length - 1 : Object.keys(params).length;
     }
 
     const toggleFilterModal = () => {
         setShowFilterModal(!showFilterModal);
-    }
+    };
 
     return (
         <div>
@@ -60,7 +70,7 @@ function Search(props) {
                     placeholder="Search"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    ref = {inputEl}
+                    ref={inputEl}
                 />
 
                 <InputGroup.Append>
