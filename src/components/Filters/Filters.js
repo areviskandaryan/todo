@@ -1,11 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import {textCutter} from "../../helpers/utils";
-import {formatDate} from "../../helpers/utils";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {ButtonGroup, DropdownButton, Dropdown, Button, Modal} from "react-bootstrap";
-
-
 
 
 const statusOptions = [
@@ -75,70 +72,35 @@ const dateOptions = [
     }
 ];
 
-export default function Filters(props) {
-
-    const [status, setStatus] = useState({
+function Filters(props) {
+    const {onClose, handleAddFilters,filterParams} = props;
+    const [status, setStatus] = useState(filterParams.status ||{
         value: ""
-    });
+    })
 
-    const [sort, setSort] = useState({
+    const [sort, setSort] = useState(filterParams.sort || {
         value: ''
     });
 
-    const [dates, setDates] = useState({
+    const [dates, setDates] = useState(filterParams.dates || {
         create_lte: null,
         create_gte: null,
         complete_lte: null,
         complete_gte: null
     });
 
-    const {onClose, handleAddFilters,filterParams} = props;
-
-    useEffect(()=>{
-        if(filterParams && filterParams.status){
-            const filteredStatusOption =statusOptions.find((option)=>{
-                return (option.value === filterParams.status)
-            });
-           setStatus({...status,...filteredStatusOption})
-        }
-        if(filterParams && filterParams.sort){
-            const filteredSortOption =sortOptions.find((option)=>{
-                return (option.value === filterParams.sort)
-            });
-            setSort({...status,...filteredSortOption})
-        }
-
-        if (filterParams && Object.keys(filterParams).length >0){
-            for(const key in filterParams){
-               const filteredDate = Object.keys(dates).find((option)=>{
-                   return(key === option)
-               });
-               if(filteredDate){
-                   setDates((dates)=>{
-                       return {...dates,[filteredDate]:new Date(filterParams[filteredDate])}
-                   })
-               }
-            }
-        }
-
-    },[]);
 
     const handleChangeDate = (value, name) => {
-        setDates({...dates, [name]: value})
+        setDates({...dates, [name]: value});
     };
 
+
     const handleFilters = () => {
-        const params = {};
-        sort.value && (params.sort = sort.value);
-        status.value && (params.status = status.value);
-        for (let key in dates) {
-            if (dates[key]) {
-                params[key] = formatDate(dates[key].toISOString());
-            }
-        }
+        const params = {status,sort,dates};
         handleAddFilters(params);
         onClose();
     };
+
 
     const handleResetFilters = () => {
         setStatus({value: ""});
@@ -253,3 +215,4 @@ export default function Filters(props) {
     )
 }
 
+export default Filters
