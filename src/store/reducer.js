@@ -1,5 +1,3 @@
-
-
 const initialState = {
     tasks: [],
     task: null,
@@ -89,6 +87,16 @@ export function reducer(state = initialState, action) {
 
         case "EDIT_TASK": {
 
+            let successMessage = 'Task edited successfully!!!'
+            if (action.status) {
+                if (action.status === "active") {
+
+                    successMessage ='The task is active now!!!';
+                } else {
+                    successMessage ='Congrats, you have completed the task!!!';
+                }
+            }
+
             if (action.from === "singleTask") {
 
                 return ({
@@ -96,7 +104,7 @@ export function reducer(state = initialState, action) {
                     task: action.editedTask,
                     loading: false,
                     showEditSingleTaskModal: true,
-                    successMessage: 'Task edited successfully!!!'
+                    successMessage: successMessage,
 
                 })
             }
@@ -111,7 +119,7 @@ export function reducer(state = initialState, action) {
                 tasks: tasksArr,
                 showEdit: true,
                 loading: false,
-                successMessage: 'Task edited successfully!!!'
+                successMessage: successMessage,
             }
         }
 

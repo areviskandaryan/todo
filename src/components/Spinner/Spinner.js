@@ -11,7 +11,7 @@ export default function Spinner(props) {
             document.body.style.overflow = "auto";
         }
         },[]
-    )
+    );
 
     return (
         <div className={styles.container}>

@@ -1,13 +1,12 @@
 import React, {Component, createRef} from "react";
-import styles from "./NewTask.module.css";
-import {formatDate} from "../../helpers/utils";
+import {connect} from "react-redux";
 import PropTypes from 'prop-types';
-import {Button, FormControl, Modal} from "react-bootstrap";
+import {formatDate} from "../../helpers/utils";
+import {addTask} from "../../store/actions";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {connect} from "react-redux"
-import {addTask} from "../../store/actions";
-
+import {Button, FormControl, Modal} from "react-bootstrap";
+import styles from "./NewTask.module.css";
 
 class NewTask extends Component {
     constructor(props) {
@@ -28,14 +27,14 @@ class NewTask extends Component {
     handleChange = ({target: {value, name}}) => {
         this.setState({
             [name]: value,
-        })
-    };
+        });
+    }
 
     handleKeyDown = (e) => {
         if (e.key === "Enter") {
             this.handleSubmitAdd();
         }
-    };
+    }
 
     handleSubmitAdd = () => {
         const {addTask} = this.props;
@@ -51,11 +50,11 @@ class NewTask extends Component {
             addTask(newTask);
 
         }
-    };
+    }
     handleChangeDate = (e) => {
         this.setState({
             date: e || new Date(),
-        })
+        });
     }
 
     render() {

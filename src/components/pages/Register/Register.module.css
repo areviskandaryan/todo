@@ -12,3 +12,8 @@
 .invalid,.invalid:focus{
     border: 1px solid red;
 }
+
+
+.link{
+    font-size: 18px;
+}

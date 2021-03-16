@@ -2,9 +2,9 @@ import React, {Component, createRef} from "react";
 import PropTypes from 'prop-types';
 import {Button, FormControl, Modal} from "react-bootstrap";
 import DatePicker from "react-datepicker";
-import {formatDate} from "../helpers/utils";
+import {formatDate} from "../../helpers/utils";
 import {connect} from "react-redux";
-import {editTask} from "../store/actions";
+import {editTask} from "../../store/actions";
 
 
 class EditTaskModal extends Component {
@@ -26,7 +26,7 @@ class EditTaskModal extends Component {
     handleChange = ({target: {value, name}}) => {
         this.setState({
             [name]: value,
-        })
+        });
     };
 
     handleKeyDown = (e) => {
@@ -53,7 +53,7 @@ class EditTaskModal extends Component {
     handleChangeDate = (e) => {
         this.setState({
             date: e || new Date(),
-        })
+        });
     }
 
     render() {

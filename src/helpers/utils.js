@@ -10,11 +10,11 @@ export function textCutter(string = "", maxLength) {
         return (string);
     }
 
-    return (string.slice(0, maxLength) + "...")
-}
+    return (string.slice(0, maxLength) + "...");
+};
 
 export function isValidEmail(str) {
     const regLetters = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
     return regLetters.test(str);
-}
+};

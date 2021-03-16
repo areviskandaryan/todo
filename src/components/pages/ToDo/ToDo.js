@@ -1,13 +1,13 @@
 import React, {Component} from "react";
-import Task from "../Task/Task";
-import {Container, Row, Col, Button} from 'react-bootstrap';
-import Confirm from "../Confirm/Confirm";
-import NewTask from "../NewTask/NewTask";
-import EditTaskModal from "../EditTaskModal";
-import styles from "./ToDo.module.css";
 import {connect} from "react-redux";
-import {getTasks, deleteSelectedTasks} from "../../store/actions";
-import Search from "../Search/Search";
+import Task from "../../Task/Task";
+import Confirm from "../../Confirm/Confirm";
+import NewTask from "../../NewTask/NewTask";
+import EditTaskModal from "../../EditTaskModal/EditTaskModal";
+import {getTasks, deleteSelectedTasks} from "../../../store/actions";
+import Search from "../../Search/Search";
+import styles from "./ToDo.module.css";
+import {Container, Row, Col, Button} from 'react-bootstrap';
 
 
 class ToDo extends Component {
@@ -40,14 +40,14 @@ class ToDo extends Component {
         if (prevProps.showConfirm !== this.props.showConfirm) {
             this.setState({
                 showConfirm: false, selectedTasks: new Set()
-            })
+            });
             return;
         }
 
         if (prevProps.showEdit !== this.props.showEdit) {
             this.setState({
                 showEdit: false, editedTask: {},
-            })
+            });
             return;
         }
 
@@ -75,27 +75,27 @@ class ToDo extends Component {
 
     handleDeleteSelectedTasks = () => {
         const {selectedTasks} = this.state;
-        this.props.deleteSelectedTasks(selectedTasks)
+        this.props.deleteSelectedTasks(selectedTasks);
 
     };
 
     toggleConfirm = () => {
         this.setState({
             showConfirm: !this.state.showConfirm,
-        })
+        });
 
     };
 
     toggleShowConfirmTask = () => {
         this.setState({
             showNewTask: !this.state.showNewTask,
-        })
+        });
     };
 
     toggleShowEditTask = () => {
         this.setState({
             showEdit: !this.state.showEdit,
-        })
+        });
     };
 
     selectConfirm = () => {
@@ -103,13 +103,13 @@ class ToDo extends Component {
         const newSelectedTasks = tasks.map(({_id}) => _id);
         this.setState({
             selectedTasks: new Set(newSelectedTasks)
-        })
+        });
     };
 
     deselectTasks = () => {
         this.setState({
             selectedTasks: new Set()
-        })
+        });
     };
 
 
@@ -118,7 +118,7 @@ class ToDo extends Component {
         const {tasks} = this.props;
         const taskComponents = tasks.map(task => {
             return (
-                <Col key={task._id} xs={12} sm={6} md={4} lg={3} xl={2}>
+                <Col key={task._id} xs={12} sm={6} md={4} lg={3} xl={3}>
                     <Task
                         task={task}
                         selectedTasks={selectedTasks}
@@ -129,7 +129,7 @@ class ToDo extends Component {
                     />
                 </Col>
             )
-        })
+        });
         return (
             <div>
                 <h1 className={styles.title}>ToDo List</h1>

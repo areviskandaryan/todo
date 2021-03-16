@@ -1,11 +1,11 @@
 import React, {Component} from "react";
-import {Container, Row, Col, Button, Card} from "react-bootstrap";
-import {formatDate} from "../../../helpers/utils";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
-import EditTaskModal from "../../EditTaskModal";
-import {getTask, deleteTask} from "../../../store/actions";
 import {connect} from "react-redux";
+import EditTaskModal from "../../EditTaskModal/EditTaskModal";
+import {getTask, deleteTask, editTask} from "../../../store/actions";
+import {formatDate} from "../../../helpers/utils";
+import {Container, Row, Col, Button, Card} from "react-bootstrap";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCheck, faEdit, faRedo, faTrash} from "@fortawesome/free-solid-svg-icons";
 
 
 class SingleTask extends Component {
@@ -23,7 +23,7 @@ class SingleTask extends Component {
         if (this.props.showEditSingleTaskModal && !prevProps.showEditSingleTaskModal) {
             this.setState({
                 showEditSingleTaskModal: false,
-            })
+            });
         }
 
     }
@@ -38,12 +38,12 @@ class SingleTask extends Component {
         const {showEditSingleTaskModal} = this.state;
         this.setState({
             showEditSingleTaskModal: !showEditSingleTaskModal,
-        })
+        });
     }
 
     render() {
         const {showEditSingleTaskModal} = this.state;
-        const {task} = this.props;
+        const {task,editTask} = this.props;
         return (
             <div className="mt-5">
                 <Container>
@@ -58,7 +58,31 @@ class SingleTask extends Component {
                                         <Card.Body>
                                             <Card.Title>{task.title}</Card.Title>
                                             <Card.Text>Description: {task.description}</Card.Text>
-                                            <Card.Text> {formatDate(task.date)}</Card.Text>
+                                            <Card.Text>Status: {task.status}</Card.Text>
+                                            <Card.Text>Created at: {formatDate(task.created_at)}</Card.Text>
+                                            <Card.Text>Copleted at: {formatDate(task.date)}</Card.Text>
+                                            {task.status === "active" ?
+                                                <Button
+                                                    variant="success"
+                                                    className="m-1"
+                                                    onClick={() => {
+                                                        editTask({status:"done", _id:task._id},"singleTask")
+                                                    }
+                                                    }
+                                                >
+                                                    <FontAwesomeIcon icon={faCheck}/>
+                                                </Button> :
+                                                <Button
+                                                    variant="secondary"
+                                                    className="m-1"
+                                                    onClick={() => {
+                                                        editTask({status:"active",_id:task._id},"singleTask")
+                                                    }
+                                                    }
+                                                >
+                                                    <FontAwesomeIcon icon={faRedo}/>
+                                                </Button>
+                                            }
                                             <Button
                                                 variant="warning"
                                                 className="m-1"
@@ -99,7 +123,7 @@ class SingleTask extends Component {
 const mapDispatchToProps = {
     getTask,
     deleteTask,
-
+    editTask
 }
 
 const mapStateToProps = (state) => {

@@ -1,12 +1,10 @@
 import React from "react";
-import {Modal, Button} from "react-bootstrap";
 import PropTypes from "prop-types";
+import {Modal, Button} from "react-bootstrap";
 
 
 function Confirm(props) {
-
     const {onClose, onConfirm, count} = props;
-
 
     return (
         <Modal
@@ -39,6 +37,6 @@ Confirm.propTypes={
     onClose :PropTypes.func.isRequired,
     onConfirm:PropTypes.func.isRequired,
     count :PropTypes.number.isRequired,
-}
+};
 
 export default Confirm;
