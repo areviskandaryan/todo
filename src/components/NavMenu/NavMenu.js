@@ -1,63 +1,120 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {NavLink} from "react-router-dom";
+import {connect} from "react-redux";
+import {Button} from "react-bootstrap";
 import styles from "./NavMenu.module.css";
+import {logout} from "../../helpers/Auth/logout";
+import {getUserInfo} from "../../store/actions";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faUser} from '@fortawesome/free-solid-svg-icons';
 
 
-export default function NavMenu() {
+function NavMenu({isAuthenticated, user,getUserInfo}) {
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            getUserInfo();
+
+        }
+    }, [isAuthenticated,getUserInfo])
+
+
     return (
         <nav>
-            <ul className={styles.linkContainer}>
-                <li className={styles.linkItem}>
+            <ul className={styles.container}>
+                {isAuthenticated &&
+                <li className={styles.containerItem}>
                     <NavLink
                         exact
                         to="/home"
                         activeClassName={styles.active}
-                        className = {styles.link}
+                        className={styles.link}
                     >
                         Home
                     </NavLink>
+
                 </li>
-                <li className={styles.linkItem}>
+                }
+                <li className={styles.containerItem}>
                     <NavLink
                         exact
                         to="/about"
                         activeClassName={styles.active}
-                        className = {styles.link}
+                        className={styles.link}
                     >
                         About us
                     </NavLink>
                 </li>
-                <li className={styles.linkItem}>
+                <li className={styles.containerItem}>
                     <NavLink
                         exact
                         to="contact"
                         activeClassName={styles.active}
-                        className = {styles.link}
+                        className={styles.link}
                     >
                         Contact
                     </NavLink>
                 </li>
-                <li className={styles.linkItem}>
-                    <NavLink
-                        exact
-                        to="/register"
-                        activeClassName={styles.active}
-                        className = {styles.link}
+                {isAuthenticated ?
+                    <Button variant="light"
+                            className={styles.button}
+                            onClick={() => logout()}
                     >
-                        Register
-                    </NavLink>
+                        Log out
+                    </Button> :
+                    <>
+                        <li className={styles.containerItem}>
+                            <NavLink
+                                exact
+                                to="/register"
+                                activeClassName={styles.active}
+                                className={styles.link}
+                            >
+                                Register
+                            </NavLink>
+                        </li>
+                        <li className={styles.containerItem}>
+                            <NavLink
+                                exact
+                                to="/login"
+                                activeClassName={styles.active}
+                                className={styles.link}
+                            >
+                                Login
+                            </NavLink>
+                        </li>
+                    </>
+
+                }
+                {user &&
+                    <li className={`${styles.containerItem} ${styles.userInfo}`}>
+                        <Button
+                            variant="secondary"
+                            className="m-2"
+                        >
+                            <FontAwesomeIcon icon={faUser}/>
+                        </Button>
+                        {`${user.name}`}
+                    </li>
+                }
+                {user &&
+                <li className={`${styles.containerItem} ${styles.userInfo}`}>
+                    {`${user.surname}`}
                 </li>
-                <li className={styles.linkItem}>
-                    <NavLink
-                        exact
-                        to="/login"
-                        activeClassName={styles.active}
-                        className = {styles.link}
-                    >
-                        Login
-                    </NavLink>
-                </li>
+                }
             </ul>
         </nav>
     )
 }
+
+const mapStateToProps = (state) => {
+    return {
+        isAuthenticated: state.isAuthenticated,
+        user: state.user,
+    }
+}
+const mapDispatchToProps = {
+    getUserInfo,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavMenu);

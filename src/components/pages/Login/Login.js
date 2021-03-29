@@ -1,11 +1,14 @@
 import React, {useState, useEffect, useRef} from "react";
 import {Link} from "react-router-dom";
+import {connect} from "react-redux";
+import {login} from "../../../store/actions"
 import {isValidEmail} from "../../../helpers/utils";
 import {Button, Form, Container, Row, Col} from "react-bootstrap";
 import styles from "./login.module.css";
 
 
-export default function Login(props) {
+
+function Login(props) {
     const [values, setValues] = useState({email: "", password: ""});
     const [errors, setErrors] = useState({email: null, password: null});
     const ref = useRef(null);
@@ -24,22 +27,18 @@ export default function Login(props) {
             setErrors(({...errors, [name]: ""}));
         }
 
-        if (value.trim().length < 6 && value.trim() && name === "password") {
-            setErrors(({...errors, [name]: "The password must be 6 characters or longer."}));
-        }
-
         setValues({...values, [name]: value.trim()});
     };
 
     const handleSubmit = () => {
-        console.log(values);
+        props.login(values);
     };
 
     return (
         <Container>
             <Row className='justify-content-center'>
                 <Col xs={7}>
-                    <Form className='mt-5'>
+                    <Form className='mt-2'>
                         <h2 className={styles.title}>Login</h2>
                         <Form.Group>
                             <Form.Control
@@ -87,3 +86,8 @@ export default function Login(props) {
 
     )
 }
+
+const mapDispatchToProps = {
+    login,
+}
+export default connect(null,mapDispatchToProps)(Login)

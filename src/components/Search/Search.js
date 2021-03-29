@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import queryString from 'query-string';
 import {getTasks} from "../../store/actions";
 import {history} from "../../helpers/history";
-import {formatDate} from "../../helpers/utils";
 import Filters from "../Filters/Filters"
 import {InputGroup, FormControl, Button} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -29,7 +28,7 @@ function Search(props) {
             filterParams.status.value && (params.status = status.value);
             for (let key in dates) {
                 if (dates[key]) {
-                    params[key] = formatDate(dates[key].toISOString());
+                    params[key] = dates[key].toLocaleDateString();
                 }
             }
         }

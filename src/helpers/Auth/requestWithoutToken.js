@@ -1,16 +1,11 @@
-import {getToken} from "./Auth/getToken";
 
 
-export async function request(url, method = "GET", body) {
-    const token = await getToken();
-    if (!token) {
-        return Promise.resolve(null);
-    }
+export function requestWithoutToken(url, method = "GET", body) {
+
     const config = {
         method,
         headers: {
             "Content-type": "application/json",
-            "Authorization": `Bearer ${token}`
         }
     };
     if (body) {

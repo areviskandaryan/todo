@@ -22,31 +22,50 @@
     color: red;
 }
 
-.linkContainer {
+.container {
     margin: 0;
     min-height: 100px;
     list-style-type: none;
     background-color: #344a72;
 }
+.button{
+    width:100%;
+    border-radius: 0px!important;
+}
+
+.userInfo{
+    color:white;
+    align-self: center;
+    text-align: center;
+    padding: 7px;
+    cursor:pointer;
+}
 
 
 @media only screen and (min-width: 700px) {
-    .linkContainer {
+    .container {
         display: flex;
         min-height: 70px;
     }
 
-    .linkContainer .linkItem:first-child {
+    .container .containerItem:first-child {
         padding-left: 20px;
     }
 
-    .linkItem {
+    .containerItem {
         margin-right: 70px;
     }
 
     .link {
         padding: 20px 15px;
         height: 100%;
+    }
+    .button{
+        max-width:7%;
+        align-self: center;
+    }
+    .containerItem:nth-child(5){
+        margin-left: auto;
     }
 
 }

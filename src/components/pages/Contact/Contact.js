@@ -22,7 +22,7 @@ function Contact(props) {
 
     useEffect(() => {
         ref.current.focus();
-        if (props.successMessage) {
+        if (props.formSuccess) {
             setValues({
                 name: "",
                 email: "",
@@ -30,7 +30,7 @@ function Contact(props) {
             })
         }
 
-    }, [props.successMessage]);
+    }, [props.formSuccess]);
 
 
 
@@ -64,7 +64,7 @@ function Contact(props) {
             <Container>
                 <Row className='justify-content-center'>
                     <Col xs={7}>
-                        <Form className='mt-5' >
+                        <Form className='mt-2' >
                             <h2 className={styles.title}>Contact us</h2>
                             <Form.Group>
                                 <Form.Control
@@ -135,7 +135,7 @@ function Contact(props) {
 
 const mapStateToProps = (state) => {
     return {
-        successMessage: state.successMessage
+        formSuccess: state.formSuccess
     }
 }
 const mapDispatchToProps = {

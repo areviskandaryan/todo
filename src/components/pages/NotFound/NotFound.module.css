@@ -1,0 +1,32 @@
+.container{
+    width:80%;
+    margin:20px auto;
+}
+
+
+.textNotFound{
+    font-family:'Roboto', sans-serif;
+    font-size: 37px;
+    font-weight: 700;
+    line-height: 1.5;
+    font-style: italic;
+    text-transform: uppercase;
+    color:#344a72;
+    padding: 10px;
+    width:100%
+}
+
+.textToLinks{
+    line-height: 1.5;
+    font-size: 20px;
+    font-weight: 500;
+    color:#344a72;
+    padding: 30px 10px;
+    margin:0;
+    width:100%
+}
+
+.link{
+    color:#344a72;
+    text-decoration: underline;
+}

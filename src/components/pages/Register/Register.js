@@ -1,11 +1,13 @@
 import React, {useState, useEffect, useRef} from "react";
 import {Link} from "react-router-dom";
-import {isValidEmail} from "../../../helpers/utils"
+import {connect} from "react-redux";
+import {isValidEmail} from "../../../helpers/utils";
+import {register} from "../../../store/actions";
 import {Button, Form, Container, Row, Col} from "react-bootstrap";
 import styles from "./Register.module.css";
 
 
-export default function Register(props) {
+function Register(props) {
     const [values, setValues] = useState({
         name: "",
         surname: "",
@@ -32,51 +34,74 @@ export default function Register(props) {
         setErrors({...errors, [name]: ""});
     };
 
+
     const handleSubmit = () => {
-
+        let valid = true;
+        let nameError = null;
         if (!values.name) {
-            setErrors((errors) => ({...errors, name: "This field can't be empty."}));
+            nameError = "This field can't be empty.";
+            valid = false;
         } else if (values.name.length < 3) {
-            setErrors((errors) => ({...errors, name: "Minimum 3 characters."}));
+            nameError = "Minimum 3 characters.";
+            valid = false;
         } else if (values.name.length > 15) {
-            setErrors((errors) => ({...errors, name: "Maximum 15 characters."}));
-        } else {
-            setErrors((errors) => ({...errors, name: ""}));
+            nameError = "Maximum 15 characters.";
+            valid = false;
         }
 
+        let surnameError = null;
         if (!values.surname) {
-            setErrors((errors) => ({...errors, surname: "This field can't be empty."}));
+            surnameError = "This field can't be empty.";
+            valid = false;
         } else if (values.surname.length < 3) {
-            setErrors((errors) => ({...errors, surname: "Minimum 3 characters."}));
+            surnameError = "Minimum 3 characters.";
+            valid = false;
         } else if (values.surname.length > 20) {
-            setErrors((errors) => ({...errors, surname: "Maximum 20 characters."}));
-        } else {
-            setErrors((errors) => ({...errors, surname: ""}));
+            surnameError = "Maximum 20 characters.";
+            valid = false;
         }
 
-
+        let emailError = null;
         if (!values.email) {
-            setErrors((errors) => ({...errors, email: "This field can't be empty."}));
+            emailError = "This field can't be empty.";
+            valid = false;
         } else if (!isValidEmail(values.email)) {
-            setErrors((errors) => ({...errors, email: "Please enter a valid email."}));
-        } else {
-            setErrors((errors) => ({...errors, email: ""}));
+            emailError = "Please enter a valid email.";
+            valid = false;
         }
 
+
+        let passwordError = null;
         if (!values.password) {
-            setErrors((errors) => ({...errors, password: "This field can't be empty."}));
+            passwordError = "This field can't be empty.";
+            valid = false;
         } else if (values.password.length < 6) {
-            setErrors((errors) => ({...errors, password: "The password must be 6 characters or longer."}));
-        } else {
-            setErrors((errors) => ({...errors, password: ""}));
+            passwordError = "The password must be 6 characters or longer.";
+            valid = false;
         }
 
+
+        let confirmPasswordError = null;
         if (!values.confirmPassword) {
-            setErrors((errors) => ({...errors, confirmPassword: "This field can't be empty."}));
+            confirmPasswordError = "This field can't be empty.";
+            valid = false;
         } else if (values.confirmPassword !== values.password) {
-            setErrors((errors) => ({...errors, confirmPassword: "Password are not matching"}));
+            confirmPasswordError = "Password are not matching";
+            valid = false;
         }
 
+        setErrors({
+            ...errors,
+            name: nameError,
+            surname: surnameError,
+            email: emailError,
+            password: passwordError,
+            confirmPassword: confirmPasswordError,
+        })
+
+        if (valid) {
+            props.register(values);
+        }
 
     };
 
@@ -84,7 +109,7 @@ export default function Register(props) {
         <Container>
             <Row className='justify-content-center'>
                 <Col xs={7}>
-                    <Form className='mt-5'>
+                    <Form className='mt-2'>
                         <h2 className={styles.title}>Register</h2>
                         <Form.Group>
                             <Form.Control
@@ -163,10 +188,15 @@ export default function Register(props) {
                         </div>
 
                     </Form>
-                    <Link to = "/login" className={styles.link}>Already registered? Try to login.</Link>
+                    <Link to="/login"  className={styles.link}>Already registered? Try to login.</Link>
                 </Col>
             </Row>
         </Container>
 
     )
 }
+
+const mapDispatchToProps = {
+    register,
+}
+export default connect(null, mapDispatchToProps)(Register);
