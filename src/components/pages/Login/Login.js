@@ -21,7 +21,10 @@ function Login(props) {
     const handleChange = ({target: {value, name}}) => {
         if (!value.trim()) {
             setErrors({...errors, [name]: "This field can't be empty."});
-        } else if (!isValidEmail(value.trim()) && name === "email") {
+        } else if (name === "password" && value.trim().length <6){
+            setErrors(({...errors, [name]: "The password must be 6 characters or longer."}));
+        }
+        else if (!isValidEmail(value.trim()) && name === "email") {
             setErrors(({...errors, [name]: "Please enter a valid email."}));
         } else {
             setErrors(({...errors, [name]: ""}));

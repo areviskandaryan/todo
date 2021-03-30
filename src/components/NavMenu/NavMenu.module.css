@@ -35,16 +35,21 @@
 
 .userInfo{
     color:white;
-    align-self: center;
+    align-self: stretch;
     text-align: center;
-    padding: 7px;
+    padding: 10px;
     cursor:pointer;
+    margin-left:auto;
+}
+.userInfo:hover {
+    background-color: white;
+    color: black;
 }
 
-
-@media only screen and (min-width: 700px) {
+@media only screen and (min-width: 800px) {
     .container {
         display: flex;
+        flex-wrap: nowrap;
         min-height: 70px;
     }
 
@@ -53,19 +58,21 @@
     }
 
     .containerItem {
-        margin-right: 70px;
+        margin-right: 50px;
     }
 
     .link {
         padding: 20px 15px;
         height: 100%;
     }
-    .button{
-        max-width:7%;
-        align-self: center;
+
+    .userInfo{
+        padding: 20px;
     }
-    .containerItem:nth-child(5){
-        margin-left: auto;
+    .button{
+        align-self: center;
+        margin-right: 30px;
+        width:100px;
     }
 
 }

@@ -39,10 +39,7 @@ function Contact(props) {
             setErrors({...errors, [name]: "This field can't be empty."});
         } else if (value.trim().length < 3 && name === "name") {
             setErrors({...errors, [name]: "Minimum 3 characters."});
-        }else if (value.trim().length >15 && name === "name"){
-            setErrors({...errors, [name]: "Maximum 15 characters."});
-        }
-        else {
+        } else {
             setErrors({...errors, [name]: ""});
         }
 

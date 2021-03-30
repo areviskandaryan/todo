@@ -38,31 +38,25 @@ function Register(props) {
     const handleSubmit = () => {
         let valid = true;
         let nameError = null;
-        if (!values.name) {
+        if (!values.name.trim()) {
             nameError = "This field can't be empty.";
             valid = false;
-        } else if (values.name.length < 3) {
+        } else if (values.name.trim().length < 3) {
             nameError = "Minimum 3 characters.";
-            valid = false;
-        } else if (values.name.length > 15) {
-            nameError = "Maximum 15 characters.";
             valid = false;
         }
 
         let surnameError = null;
-        if (!values.surname) {
+        if (!values.surname.trim()) {
             surnameError = "This field can't be empty.";
             valid = false;
-        } else if (values.surname.length < 3) {
+        } else if (values.surname.trim().length < 3) {
             surnameError = "Minimum 3 characters.";
-            valid = false;
-        } else if (values.surname.length > 20) {
-            surnameError = "Maximum 20 characters.";
             valid = false;
         }
 
         let emailError = null;
-        if (!values.email) {
+        if (!values.email.trim()) {
             emailError = "This field can't be empty.";
             valid = false;
         } else if (!isValidEmail(values.email)) {
@@ -72,17 +66,17 @@ function Register(props) {
 
 
         let passwordError = null;
-        if (!values.password) {
+        if (!values.password.trim()) {
             passwordError = "This field can't be empty.";
             valid = false;
-        } else if (values.password.length < 6) {
+        } else if (values.password.trim().length < 6) {
             passwordError = "The password must be 6 characters or longer.";
             valid = false;
         }
 
 
         let confirmPasswordError = null;
-        if (!values.confirmPassword) {
+        if (!values.confirmPassword.trim()) {
             confirmPasswordError = "This field can't be empty.";
             valid = false;
         } else if (values.confirmPassword !== values.password) {

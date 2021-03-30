@@ -5,18 +5,15 @@ import {Button} from "react-bootstrap";
 import styles from "./NavMenu.module.css";
 import {logout} from "../../helpers/Auth/logout";
 import {getUserInfo} from "../../store/actions";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faUser} from '@fortawesome/free-solid-svg-icons';
 
-
-function NavMenu({isAuthenticated, user,getUserInfo}) {
+function NavMenu({isAuthenticated, user, getUserInfo}) {
 
     useEffect(() => {
         if (isAuthenticated) {
             getUserInfo();
 
         }
-    }, [isAuthenticated,getUserInfo])
+    }, [isAuthenticated, getUserInfo])
 
 
     return (
@@ -32,7 +29,6 @@ function NavMenu({isAuthenticated, user,getUserInfo}) {
                     >
                         Home
                     </NavLink>
-
                 </li>
                 }
                 <li className={styles.containerItem}>
@@ -55,13 +51,19 @@ function NavMenu({isAuthenticated, user,getUserInfo}) {
                         Contact
                     </NavLink>
                 </li>
+                {user &&
+                <li className={`${styles.containerItem} ${styles.userInfo}`}>
+                    {`${user.name} ${user.surname}`}
+                </li>
+                }
                 {isAuthenticated ?
                     <Button variant="light"
                             className={styles.button}
                             onClick={() => logout()}
                     >
                         Log out
-                    </Button> :
+                    </Button>
+                    :
                     <>
                         <li className={styles.containerItem}>
                             <NavLink
@@ -84,26 +86,10 @@ function NavMenu({isAuthenticated, user,getUserInfo}) {
                             </NavLink>
                         </li>
                     </>
-
-                }
-                {user &&
-                    <li className={`${styles.containerItem} ${styles.userInfo}`}>
-                        <Button
-                            variant="secondary"
-                            className="m-2"
-                        >
-                            <FontAwesomeIcon icon={faUser}/>
-                        </Button>
-                        {`${user.name}`}
-                    </li>
-                }
-                {user &&
-                <li className={`${styles.containerItem} ${styles.userInfo}`}>
-                    {`${user.surname}`}
-                </li>
                 }
             </ul>
         </nav>
+
     )
 }
 
@@ -118,3 +104,4 @@ const mapDispatchToProps = {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavMenu);
+
