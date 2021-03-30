@@ -22,7 +22,7 @@ function Contact(props) {
 
     useEffect(() => {
         ref.current.focus();
-        if (props.successMessage) {
+        if (props.formSuccess) {
             setValues({
                 name: "",
                 email: "",
@@ -30,7 +30,7 @@ function Contact(props) {
             })
         }
 
-    }, [props.successMessage]);
+    }, [props.formSuccess]);
 
 
 
@@ -39,10 +39,7 @@ function Contact(props) {
             setErrors({...errors, [name]: "This field can't be empty."});
         } else if (value.trim().length < 3 && name === "name") {
             setErrors({...errors, [name]: "Minimum 3 characters."});
-        }else if (value.trim().length >15 && name === "name"){
-            setErrors({...errors, [name]: "Maximum 15 characters."});
-        }
-        else {
+        } else {
             setErrors({...errors, [name]: ""});
         }
 
@@ -64,7 +61,7 @@ function Contact(props) {
             <Container>
                 <Row className='justify-content-center'>
                     <Col xs={7}>
-                        <Form className='mt-5' >
+                        <Form className='mt-2' >
                             <h2 className={styles.title}>Contact us</h2>
                             <Form.Group>
                                 <Form.Control
@@ -135,7 +132,7 @@ function Contact(props) {
 
 const mapStateToProps = (state) => {
     return {
-        successMessage: state.successMessage
+        formSuccess: state.formSuccess
     }
 }
 const mapDispatchToProps = {

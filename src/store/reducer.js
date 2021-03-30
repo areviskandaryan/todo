@@ -1,3 +1,5 @@
+import {checkLoginStatus} from "../helpers/Auth/checkLoginStatus";
+
 const initialState = {
     tasks: [],
     task: null,
@@ -8,10 +10,21 @@ const initialState = {
     loading: false,
     successMessage: null,
     errorMessage: null,
+    isAuthenticated:checkLoginStatus(),
+    formSuccess:false,
+    user:null,
 };
 
 export function reducer(state = initialState, action) {
     switch (action.type) {
+        case  "GETUSERINFO_SUCCESS": {
+
+            return {
+                ...state,
+                loading: false,
+                user: action.user,
+            }
+        }
         case "GET_TASKS": {
             return {
                 ...state,
@@ -48,6 +61,7 @@ export function reducer(state = initialState, action) {
                 loading: true,
                 successMessage: null,
                 errorMessage: null,
+                formSuccess:false,
             }
         }
 
@@ -128,9 +142,37 @@ export function reducer(state = initialState, action) {
                 ...state,
                 loading: false,
                 successMessage: 'YOUR MESSAGE SENT!!!',
+                formSuccess:true,
 
             }
         }
+        case  "REGISTER_SUCCESS": {
+
+            return {
+                ...state,
+                loading: false,
+                successMessage: 'You have successfully registered!!!'
+            }
+        }
+        case  "LOGIN_SUCCESS": {
+
+            return {
+                ...state,
+                loading: false,
+                isAuthenticated:true
+            }
+        }
+
+        case  "LOGOUT": {
+
+            return {
+                ...state,
+                loading: false,
+                isAuthenticated:false,
+                user:null,
+            }
+        }
+
         case "ERROR": {
             return (
                 {

@@ -19,7 +19,7 @@ class Task extends PureComponent {
     render() {
         const {task, deleteTask, disabled, checked, onEdit,editTask} = this.props;
         return (
-            <Card className={`${styles.card} ${checked ? styles.selected : ""}`}>
+            <Card className={`${styles.card} ${checked?styles.selected:""}`}>
                 <Card.Body>
                     <input
                         type="checkbox"

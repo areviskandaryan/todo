@@ -11,10 +11,13 @@ import NavMenu from "./components/NavMenu/NavMenu";
 import SingleTask from "./components/pages/SingleTask/SingleTask";
 import Spinner from "./components/Spinner/Spinner";
 import {history} from "./helpers/history";
+import AuthRoute from "./components/AuthRoute/AuthRoute";
+import Footer from "./components/Footer/Footer";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './App.css';
+import styles from "./App.module.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 
 const toastProps = {
@@ -25,6 +28,8 @@ const toastProps = {
     pauseOnHover: true,
     draggable: true
 };
+
+
 
 function App(props) {
     useEffect(()=>{
@@ -40,22 +45,15 @@ function App(props) {
     },[props.successMessage,props.errorMessage]);
 
   return (
-    <div >
+
+    <div className={styles.container}>
         <Router history = {history}>
             <NavMenu />
             <Switch>
-                <Route exact path="/register">
-                    <Register />
-                </Route>
-                <Route exact path="/login">
-                    <Login />
-                </Route>
-                <Route exact path="/">
-                    <ToDo />
-                </Route>
-                <Route exact path="/home">
-                    <ToDo />
-                </Route>
+                <AuthRoute exact path="/register" component={Register} type = "public"/>
+                <AuthRoute exact path="/login" component={Login} type = "public" />
+                <AuthRoute exact path="/" component={ToDo} type="private" />
+                <AuthRoute exact path="/home" component={ToDo} type="private" />
                 <Route exact path="/about">
                     <About />
                 </Route>
@@ -65,14 +63,13 @@ function App(props) {
                 <Route exact path="/not-found">
                     <NotFound />
                 </Route>
-                <Route exact path = "/task/:taskId" component = { SingleTask } />
+                <AuthRoute exact path = "/task/:taskId" component = { SingleTask } type="private" />
                 <Redirect to="/not-found"/>
-
             </Switch>
-
         </Router>
         {props.loading && <Spinner/>}
         <ToastContainer/>
+        <Footer />
     </div>
   );
 }

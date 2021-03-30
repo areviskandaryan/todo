@@ -145,6 +145,7 @@ class ToDo extends Component {
                                 variant="primary"
                                 onClick={this.toggleShowConfirmTask}
                                 className={styles.button}
+                                disabled={selectedTasks.size}
 
                             >
                                 Add New task
