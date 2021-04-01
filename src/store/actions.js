@@ -3,11 +3,13 @@ import {request} from "../helpers/request";
 import {history} from "../helpers/history"
 import {saveToken} from "../helpers/Auth/saveToken";
 import {requestWithoutToken} from "../helpers/Auth/requestWithoutToken";
+import {getQuery} from "../helpers/utils";
 
 const apiHost = process.env.REACT_APP_API_HOST;
 
 export function getTasks(params={}) {
-    const query = Object.entries(params).map(([key,value])=>`${key}=${value}`).join("&");
+    const query =(typeof params === "string")?params:getQuery(params);
+
     return (dispatch) => {
         dispatch({type: actionTypes.PENDING})
 
@@ -15,6 +17,7 @@ export function getTasks(params={}) {
             .then((tasks) => {
                 if(!tasks) return;
                 dispatch({type: actionTypes.GET_TASKS, tasks});
+                history.push(`/?${query}`)
             })
             .catch((error) => dispatch({type: actionTypes.ERROR, error: error.message}))
     }
@@ -136,9 +139,7 @@ export function getUserInfo() {
     return (dispatch) => {
         request(`${apiHost}/user`, "GET")
             .then((user) => {
-
-                // if(!user) return;
-                console.log(user);
+                if(!user) return;
                 dispatch({type: actionTypes.GETUSERINFO_SUCCESS, user});
             })
             .catch((error) => dispatch({type: actionTypes.ERROR, error: error.message}))

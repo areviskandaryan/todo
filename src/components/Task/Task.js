@@ -33,6 +33,9 @@ class Task extends PureComponent {
                     <Card.Text>Status: {task.status}</Card.Text>
                     <Card.Text>Created at: {formatDate(task.created_at)}</Card.Text>
                     <Card.Text>Copleted at: {formatDate(task.date)}</Card.Text>
+                    <div className={styles.buttonWrupper}>
+
+
                     {task.status === "active" ?
                         <Button
                             variant="success"
@@ -76,6 +79,7 @@ class Task extends PureComponent {
                     >
                         <FontAwesomeIcon icon={faTrash}/>
                     </Button>
+                    </div>
                 </Card.Body>
             </Card>
         )
