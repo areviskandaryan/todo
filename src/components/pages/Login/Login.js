@@ -42,7 +42,7 @@ function Login(props) {
             <Row className='justify-content-center'>
                 <Col xs={7}>
                     <Form className='mt-2'>
-                        <h2 className={styles.title}>Login</h2>
+                        <h2 className={styles.title}>Log in</h2>
                         <Form.Group>
                             <Form.Control
                                 className={errors.email ? styles.invalid : ''}
@@ -77,7 +77,7 @@ function Login(props) {
                                 disabled={!values.email || errors.email || !values.password || errors.password}
                                 className={styles.submitButton}
                             >
-                                Send
+                                Log in
                             </Button>
                         </div>
 

@@ -1,4 +1,5 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect, useRef, useMemo} from "react";
+import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import queryString from 'query-string';
 import {getTasks} from "../../store/actions";
@@ -7,6 +8,8 @@ import Filters from "../Filters/Filters"
 import {InputGroup, FormControl, Button} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faFilter} from '@fortawesome/free-solid-svg-icons';
+import {getQuery} from "../../helpers/utils";
+
 
 
 function Search(props) {
@@ -20,24 +23,14 @@ function Search(props) {
         setFilterParams(params);
     };
 
-    const getAllParams = () => {
-        const params = {};
-        const {status, sort, dates} = filterParams;
-        if (Object.keys(filterParams).length) {
-            filterParams.sort.value && (params.sort = sort.value);
-            filterParams.status.value && (params.status = status.value);
-            for (let key in dates) {
-                if (dates[key]) {
-                    params[key] = dates[key].toLocaleDateString();
-                }
-            }
-        }
+    const getAllParams = (filterParams) => {
+        const params = {...filterParams};
         search && (params.search = search);
         return params;
     }
 
-    const params = getAllParams();
-
+    // eslint-disable-next-line
+    const params = useMemo(() => getAllParams(filterParams), [filterParams, search]);
 
     const handleSubmit = () => {
         props.getTasks(params);
@@ -49,14 +42,29 @@ function Search(props) {
 
 
     useEffect(() => {
-        const queryParams = queryString.stringify(params);
-        history.replace({search: queryParams});
+        const query = getQuery(params);
+        history.push(`/?${query}`);
     }, [params]);
 
 
-    const getCountOfFilters = () => {
-        return params.search ? Object.keys(params).length - 1 : Object.keys(params).length;
+    const urlQuery = props.location.search;
+    useEffect(() => {
+        if (urlQuery) {
+            const query = urlQuery.slice(1);
+            const parsedQueryToObject = queryString.parse(query);
+            if (parsedQueryToObject.search) {
+                const {search, ...rest} =parsedQueryToObject;
+                setSearch(parsedQueryToObject.search);
+                setFilterParams(rest);
+            }
+
+        }
+    }, [urlQuery])
+
+    const getCountOfFilters = (filterParams) => {
+        return Object.keys(filterParams).length;
     }
+
 
     const toggleFilterModal = () => {
         setShowFilterModal(!showFilterModal);
@@ -78,7 +86,7 @@ function Search(props) {
                         onClick={toggleFilterModal}
                     >
                         <FontAwesomeIcon icon={faFilter}/>
-                        <span>{getCountOfFilters()}</span>
+                        <span>{getCountOfFilters(filterParams)}</span>
                     </Button>
                 </InputGroup.Append>
                 <InputGroup.Append>
@@ -108,4 +116,4 @@ function Search(props) {
 const mapDispatchToProps = {
     getTasks,
 }
-export default connect(null, mapDispatchToProps)(Search);
+export default connect(null, mapDispatchToProps)(withRouter(Search));

@@ -4,7 +4,9 @@
 }
 
 .title {
-    padding: 30px;
+    padding: 40px 30px 30px;
     font-style: italic;
+    font-weight: 700;
     color: #344a72;
+    text-align: center;
 }

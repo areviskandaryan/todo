@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {textCutter} from "../../helpers/utils";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {ButtonGroup, DropdownButton, Dropdown, Button, Modal} from "react-bootstrap";
+import PropTypes from "prop-types";
 
 
 const statusOptions = [
@@ -73,21 +74,53 @@ const dateOptions = [
 ];
 
 function Filters(props) {
-    const {onClose, handleAddFilters,filterParams} = props;
-    const [status, setStatus] = useState(filterParams.status ||{
+    const {onClose, handleAddFilters, filterParams} = props;
+    const [status, setStatus] = useState({
         value: ""
     })
 
-    const [sort, setSort] = useState(filterParams.sort || {
+    const [sort, setSort] = useState({
         value: ''
     });
 
-    const [dates, setDates] = useState(filterParams.dates || {
+    const [dates, setDates] = useState({
         create_lte: null,
         create_gte: null,
         complete_lte: null,
         complete_gte: null
     });
+
+
+    useEffect(() => {
+        if (filterParams.sort) {
+            const newSort = sortOptions.find(el => {
+                return (el.value === filterParams.sort);
+            })
+            setSort(newSort);
+        }
+        if (filterParams.status) {
+            const newStatus = statusOptions.find(el => {
+                return (el.value === filterParams.status);
+            })
+            setStatus(newStatus);
+        }
+
+        for (let key in filterParams) {
+            const newDates = dateOptions.find((el) => {
+                return (el.value === key)
+            });
+            if (newDates) {
+                setDates((dates) => {
+                    return {
+                        ...dates, ...{
+                            [key]: new Date(filterParams[key])
+                        }
+                    }
+                });
+            }
+        }
+
+    }, [filterParams]);
 
 
     const handleChangeDate = (value, name) => {
@@ -96,7 +129,14 @@ function Filters(props) {
 
 
     const handleFilters = () => {
-        const params = {status,sort,dates};
+        const params = {};
+        sort.value && (params.sort = sort.value);
+        status.value && (params.status = status.value);
+        for (let key in dates) {
+            if (dates[key]) {
+                params[key] = dates[key].toLocaleDateString();
+            }
+        }
         handleAddFilters(params);
         onClose();
     };
@@ -215,4 +255,10 @@ function Filters(props) {
     )
 }
 
+Filters.propTypes = {
+    onClose: PropTypes.func.isRequired,
+    handleAddFilters: PropTypes.func.isRequired,
+    filterParams: PropTypes.object.isRequired,
+
+};
 export default Filters

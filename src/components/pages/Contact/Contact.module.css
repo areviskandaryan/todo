@@ -2,6 +2,8 @@
 .title{
     padding: 30px 10px;
     text-align: center;
+    font-style: italic;
+    color: #344a72;
 }
 
 .submitButton{

@@ -10,6 +10,7 @@ import styles from "./ToDo.module.css";
 import {Container, Row, Col, Button} from 'react-bootstrap';
 
 
+
 class ToDo extends Component {
     constructor(props) {
         super(props)
@@ -23,8 +24,8 @@ class ToDo extends Component {
 
 
     componentDidMount() {
-        this.props.getTasks();
-
+        const query = this.props.location.search;
+        query?this.props.getTasks(query.slice(1)):this.props.getTasks();
     }
 
 

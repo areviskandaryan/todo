@@ -18,3 +18,8 @@ export function isValidEmail(str) {
 
     return regLetters.test(str);
 };
+
+export function getQuery(params){
+    const query = Object.entries(params).map(([key,value])=>`${key}=${value}`).join("&");
+    return query;
+}
