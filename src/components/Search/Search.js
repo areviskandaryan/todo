@@ -47,9 +47,8 @@ function Search(props) {
     }, [params]);
 
 
-    // eslint-disable-next-line
+    const urlQuery = props.location.search;
     useEffect(() => {
-        const urlQuery = props.location.search;
         if (urlQuery) {
             const query = urlQuery.slice(1);
             const parsedQueryToObject = queryString.parse(query);
@@ -60,7 +59,7 @@ function Search(props) {
             }
 
         }
-    }, [])
+    }, [urlQuery])
 
     const getCountOfFilters = (filterParams) => {
         return Object.keys(filterParams).length;

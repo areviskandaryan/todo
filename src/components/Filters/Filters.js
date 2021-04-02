@@ -90,7 +90,7 @@ function Filters(props) {
         complete_gte: null
     });
 
-    // eslint-disable-next-line
+
     useEffect(() => {
         if (filterParams.sort) {
             const newSort = sortOptions.find(el => {
@@ -120,7 +120,7 @@ function Filters(props) {
             }
         }
 
-    }, []);
+    }, [filterParams]);
 
 
     const handleChangeDate = (value, name) => {
