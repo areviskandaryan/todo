@@ -11,9 +11,8 @@ function NavMenu({isAuthenticated, user, getUserInfo}) {
     useEffect(() => {
         if (isAuthenticated) {
             getUserInfo();
-
         }
-    }, [isAuthenticated, getUserInfo])
+    }, [isAuthenticated, getUserInfo]);
 
 
     return (
@@ -89,19 +88,18 @@ function NavMenu({isAuthenticated, user, getUserInfo}) {
                 }
             </ul>
         </nav>
-
     )
 }
 
 const mapStateToProps = (state) => {
     return {
         isAuthenticated: state.isAuthenticated,
-        user: state.user,
-    }
+        user: state.user
+    };
 }
 const mapDispatchToProps = {
-    getUserInfo,
-}
+    getUserInfo
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavMenu);
 

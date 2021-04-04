@@ -9,11 +9,9 @@ import Search from "../../Search/Search";
 import styles from "./ToDo.module.css";
 import {Container, Row, Col, Button} from 'react-bootstrap';
 
-
-
 class ToDo extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             selectedTasks: new Set(),
             editedTask: {},
@@ -22,15 +20,12 @@ class ToDo extends Component {
         };
     }
 
-
     componentDidMount() {
         const query = this.props.location.search;
         query?this.props.getTasks(query.slice(1)):this.props.getTasks();
     }
 
-
     componentDidUpdate(prevProps, prevState) {
-
         if (prevProps.showNewTask !== this.props.showNewTask) {
             this.setState({
                 showNewTask: false
@@ -40,25 +35,26 @@ class ToDo extends Component {
 
         if (prevProps.showConfirm !== this.props.showConfirm) {
             this.setState({
-                showConfirm: false, selectedTasks: new Set()
+                showConfirm: false,
+                selectedTasks: new Set()
             });
             return;
         }
 
         if (prevProps.showEdit !== this.props.showEdit) {
             this.setState({
-                showEdit: false, editedTask: {},
+                showEdit: false,
+                editedTask: {},
             });
             return;
         }
-
     }
 
 
     handleEdit = (editedTask) => {
         this.setState({
             editedTask,
-            showEdit: true,
+            showEdit: true
         })
     };
 
@@ -77,25 +73,23 @@ class ToDo extends Component {
     handleDeleteSelectedTasks = () => {
         const {selectedTasks} = this.state;
         this.props.deleteSelectedTasks(selectedTasks);
-
     };
 
     toggleConfirm = () => {
         this.setState({
-            showConfirm: !this.state.showConfirm,
+            showConfirm: !this.state.showConfirm
         });
-
     };
 
     toggleShowConfirmTask = () => {
         this.setState({
-            showNewTask: !this.state.showNewTask,
+            showNewTask: !this.state.showNewTask
         });
     };
 
     toggleShowEditTask = () => {
         this.setState({
-            showEdit: !this.state.showEdit,
+            showEdit: !this.state.showEdit
         });
     };
 
@@ -147,7 +141,6 @@ class ToDo extends Component {
                                 onClick={this.toggleShowConfirmTask}
                                 className={styles.button}
                                 disabled={selectedTasks.size}
-
                             >
                                 Add New task
                             </Button>
@@ -184,21 +177,19 @@ class ToDo extends Component {
                     </Row>
                     <Row>{taskComponents}</Row>
                 </Container>
-
                 {
                     showConfirm &&
                     <Confirm
                         onClose={this.toggleConfirm}
                         count={selectedTasks.size}
                         onConfirm={this.handleDeleteSelectedTasks}
-                    />}
-
+                    />
+                }
                 {
                     showNewTask &&
                     <NewTask
                         onClose={this.toggleShowConfirmTask}
                         disabled={!!selectedTasks.size}
-
                     />
                 }
                 {
@@ -219,15 +210,13 @@ const mapStateToProps = (state) => {
         tasks: state.tasks,
         showNewTask: state.showNewTask,
         showConfirm: state.showConfirm,
-        showEdit: state.showEdit,
-
+        showEdit: state.showEdit
     };
 };
 
-
 const mapDispatchToProps = {
     getTasks: getTasks,
-    deleteSelectedTasks: deleteSelectedTasks,
+    deleteSelectedTasks: deleteSelectedTasks
 }
 
 

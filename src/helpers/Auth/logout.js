@@ -3,8 +3,8 @@ import * as actionTypes from "../../store/actionTypes";
 import {history} from "../history";
 
 
-export const logout=()=>{
+export const logout = () => {
     localStorage.removeItem("token");
-    store.dispatch({type:actionTypes.LOGOUT});
+    store.dispatch({type: actionTypes.LOGOUT});
     history.push('/login');
 }

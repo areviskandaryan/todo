@@ -30,25 +30,26 @@
 }
 .button{
     width:100%;
-    border-radius: 0px!important;
+    border-radius: 0 !important;
 }
 
 .userInfo{
+    margin-left:auto;
+    padding: 10px;
     color:white;
     text-align: center;
-    padding: 10px;
     cursor:pointer;
-    margin-left:auto;
 }
+
 .userInfo:hover {
     background-color: white;
     color: black;
 }
 
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: 940px) {
     .container {
         display: flex;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
         min-height: 70px;
     }
 
@@ -73,5 +74,4 @@
         margin-right: 30px;
         width:100px;
     }
-
 }

@@ -14,7 +14,7 @@ class NewTask extends Component {
         this.state = {
             title: "",
             description: "",
-            date: new Date(),
+            date: new Date()
         };
         this.ref = createRef();
     }
@@ -23,18 +23,17 @@ class NewTask extends Component {
         this.ref.current.focus();
     }
 
-
     handleChange = ({target: {value, name}}) => {
         this.setState({
-            [name]: value,
+            [name]: value
         });
-    }
+    };
 
     handleKeyDown = (e) => {
         if (e.key === "Enter") {
             this.handleSubmitAdd();
         }
-    }
+    };
 
     handleSubmitAdd = () => {
         const {addTask} = this.props;
@@ -45,17 +44,17 @@ class NewTask extends Component {
             const newTask = {
                 title,
                 description,
-                date: formatDate(date.toISOString()),
+                date: formatDate(date.toISOString())
             };
             addTask(newTask);
-
         }
-    }
+    };
+
     handleChangeDate = (e) => {
         this.setState({
-            date: e || new Date(),
+            date: e || new Date()
         });
-    }
+    };
 
     render() {
         const {onClose} = this.props;
@@ -82,7 +81,6 @@ class NewTask extends Component {
                         onChange={this.handleChange}
                         onKeyDown={this.handleKeyDown}
                         ref={this.ref}
-
                     />
                     <FormControl
                         className='mb-2'
@@ -92,18 +90,14 @@ class NewTask extends Component {
                         name="description"
                         value={description}
                         onChange={this.handleChange}
-
                     />
                     <DatePicker
                         minDate={new Date()}
                         selected={this.state.date}
                         onChange={this.handleChangeDate}
                         className={styles.date}
-
                     />
-
                 </Modal.Body>
-
                 <Modal.Footer>
                     <Button
                         onClick={this.handleSubmitAdd}
@@ -114,24 +108,17 @@ class NewTask extends Component {
                     <Button onClick={onClose}>Cancel</Button>
                 </Modal.Footer>
             </Modal>
-
-
         )
     }
-
-
 }
 
 NewTask.propTypes = {
     onClose: PropTypes.func.isRequired,
-    disabled: PropTypes.bool.isRequired,
+    disabled: PropTypes.bool.isRequired
 };
 
 const mapDispatchToProps ={
-    addTask:  addTask,
-}
-
-
-
+    addTask:  addTask
+};
 
 export default connect(null, mapDispatchToProps)(NewTask);

@@ -26,20 +26,6 @@ export default function About() {
                     And finally there are linkedin and github contacts of author in the footer of website.
                 </li>
             </ol>
-            {/*<div className={styles.infoText}>*/}
-            {/*    The author Arevik Iskandaryan was born in the Republic of Armenia in 1990.*/}
-            {/*    In 2006-2010 she graduated Engineering University of Armenia Faculty of*/}
-            {/*    Cybernetics and received Bachelor's degree. In 2010-2012 she graduated*/}
-            {/*    Engineering University of Armenia Faculty of Cybernetics and received*/}
-            {/*    a Master's degree. Although having more than 10 years of*/}
-            {/*    professional experience in finance and accounting sector,*/}
-            {/*    she decided to change profession and started learning web*/}
-            {/*    development in the Armenian Code Academy. After graduating*/}
-            {/*    advanced course of javascript/reactjs there, continued education in the*/}
-            {/*    Bitschool Academy course of reactjs. The author is a hardworking and ambitious,*/}
-            {/*    individual and she is ready to grow*/}
-            {/*    and further improve her IT skills.*/}
-            {/*</div>*/}
         </>
     )
 }

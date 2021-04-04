@@ -10,7 +10,7 @@ export const getToken = () => {
     if (token) {
         const parsed = JSON.parse(token);
         const decoded = jwt_decode(parsed.jwt);
-        if (decoded.exp - new Date().getTime() / 1000 > 580) {
+        if (decoded.exp - new Date().getTime() / 1000 > 60) {
             return Promise.resolve(parsed.jwt);
         } else {
             return requestWithoutToken(`${apiHost}/user/${decoded.userId}/token`, "PUT", {refreshToken: parsed.refreshToken})
@@ -18,9 +18,9 @@ export const getToken = () => {
                     saveToken(token);
                     return token.jwt;
                 })
-                .catch(()=>{
+                .catch(() => {
                     logout();
-                })
+                });
         }
     } else {
         logout();
