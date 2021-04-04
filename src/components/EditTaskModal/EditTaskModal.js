@@ -14,10 +14,10 @@ class EditTaskModal extends Component {
         this.state = {
             title: props.editedTask.title,
             description: props.editedTask.description,
-            date: new Date(props.editedTask.date),
-        }
+            date: new Date(props.editedTask.date)
+        };
         this.ref = createRef();
-    };
+    }
 
     componentDidMount() {
         this.ref.current.focus();
@@ -25,7 +25,7 @@ class EditTaskModal extends Component {
 
     handleChange = ({target: {value, name}}) => {
         this.setState({
-            [name]: value,
+            [name]: value
         });
     };
 
@@ -52,7 +52,7 @@ class EditTaskModal extends Component {
 
     handleChangeDate = (e) => {
         this.setState({
-            date: e || new Date(),
+            date: e || new Date()
         });
     }
 
@@ -115,11 +115,12 @@ class EditTaskModal extends Component {
 }
 
 EditTaskModal.propTypes = {
-    onClose: PropTypes.func.isRequired,
-}
+    editedTask: PropTypes.object.isRequired,
+    onClose: PropTypes.func.isRequired
+};
 
 const mapDispatchToProps = {
-    editTask: editTask,
-}
+    editTask: editTask
+};
 
 export default connect(null, mapDispatchToProps)(EditTaskModal);

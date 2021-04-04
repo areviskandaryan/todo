@@ -18,7 +18,7 @@ const statusOptions = [
     {
         label: "Active",
         value: "active"
-    },
+    }
 
 ];
 
@@ -95,19 +95,19 @@ function Filters(props) {
         if (filterParams.sort) {
             const newSort = sortOptions.find(el => {
                 return (el.value === filterParams.sort);
-            })
+            });
             setSort(newSort);
         }
         if (filterParams.status) {
             const newStatus = statusOptions.find(el => {
                 return (el.value === filterParams.status);
-            })
+            });
             setStatus(newStatus);
         }
 
         for (let key in filterParams) {
             const newDates = dateOptions.find((el) => {
-                return (el.value === key)
+                return (el.value === key);
             });
             if (newDates) {
                 setDates((dates) => {
@@ -115,7 +115,7 @@ function Filters(props) {
                         ...dates, ...{
                             [key]: new Date(filterParams[key])
                         }
-                    }
+                    };
                 });
             }
         }
@@ -149,7 +149,7 @@ function Filters(props) {
             create_lte: null,
             create_gte: null,
             complete_lte: null,
-            complete_gte: null,
+            complete_gte: null
         });
     };
 
@@ -179,9 +179,7 @@ function Filters(props) {
                                 <Dropdown.Item
                                     key={index}
                                     active={status.value === option.value}
-                                    onClick={
-                                        () => setStatus(option)
-                                    }
+                                    onClick={() => setStatus(option)}
                                 >
                                     {option.label}
                                 </Dropdown.Item>
@@ -189,7 +187,6 @@ function Filters(props) {
                         })
                     }
                 </DropdownButton>
-
                 <DropdownButton
                     as={ButtonGroup}
                     variant="outline-primary"
@@ -202,10 +199,7 @@ function Filters(props) {
                                 <Dropdown.Item
                                     key={index}
                                     active={sort.value === option.value}
-                                    onClick={
-                                        () => setSort(option)
-                                    }
-
+                                    onClick={() => setSort(option)}
                                 >
                                     {option.label}
                                 </Dropdown.Item>
@@ -228,11 +222,8 @@ function Filters(props) {
                             )
                         })
                     }
-
                 </div>
-
             </Modal.Body>
-
             <Modal.Footer>
                 <Button
                     onClick={handleFilters}
@@ -259,6 +250,6 @@ Filters.propTypes = {
     onClose: PropTypes.func.isRequired,
     handleAddFilters: PropTypes.func.isRequired,
     filterParams: PropTypes.object.isRequired,
-
 };
-export default Filters
+
+export default Filters;

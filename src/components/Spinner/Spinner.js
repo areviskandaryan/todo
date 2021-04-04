@@ -7,10 +7,10 @@ export default function Spinner(props) {
 
     useEffect(() => {
             document.body.style.overflow = "hidden";
-        return ()=>{
-            document.body.style.overflow = "auto";
-        }
-        },[]
+            return () => {
+                document.body.style.overflow = "auto";
+            }
+        }, []
     );
 
     return (
@@ -24,8 +24,5 @@ export default function Spinner(props) {
                 <span className="sr-only">Loading...</span>
             </BSpinner>
         </div>
-
     )
-
-
 }

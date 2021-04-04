@@ -10,36 +10,33 @@ const initialState = {
     loading: false,
     successMessage: null,
     errorMessage: null,
-    isAuthenticated:checkLoginStatus(),
-    formSuccess:false,
-    user:null,
+    isAuthenticated: checkLoginStatus(),
+    formSuccess: false,
+    user: null
 };
 
 export function reducer(state = initialState, action) {
     switch (action.type) {
         case  "GETUSERINFO_SUCCESS": {
-
             return {
                 ...state,
                 loading: false,
-                user: action.user,
-            }
+                user: action.user
+            };
         }
         case "GET_TASKS": {
             return {
                 ...state,
                 tasks: action.tasks,
-                loading: false,
-
-            }
+                loading: false
+            };
         }
         case "GET_TASK": {
             return {
                 ...state,
                 task: action.task,
-                loading: false,
-
-            }
+                loading: false
+            };
         }
         case "ADD_TASK": {
             return {
@@ -47,9 +44,8 @@ export function reducer(state = initialState, action) {
                 tasks: [...state.tasks, action.newTask],
                 showNewTask: true,
                 loading: false,
-                successMessage: 'Task created successfully!!!',
-
-            }
+                successMessage: 'Task created successfully!!!'
+            };
         }
         case "PENDING": {
             return {
@@ -61,8 +57,8 @@ export function reducer(state = initialState, action) {
                 loading: true,
                 successMessage: null,
                 errorMessage: null,
-                formSuccess:false,
-            }
+                formSuccess: false
+            };
         }
 
         case "DELETE_TASK": {
@@ -72,8 +68,7 @@ export function reducer(state = initialState, action) {
                     task: null,
                     loading: false,
                     successMessage: 'Task deleted successfully!!!'
-
-                })
+                });
             }
             const filteredTask = state.tasks.filter(task => action.taskId !== task._id);
             return {
@@ -81,13 +76,12 @@ export function reducer(state = initialState, action) {
                 tasks: filteredTask,
                 loading: false,
                 successMessage: 'Task deleted successfully!!!'
-            }
+            };
         }
 
         case  "DELETESELECTED_TASKS": {
-
             const removeSelectedTasks = state.tasks.filter(task => {
-                return !action.selectedTasks.has(task._id)
+                return !action.selectedTasks.has(task._id);
             });
             return {
                 ...state,
@@ -95,97 +89,85 @@ export function reducer(state = initialState, action) {
                 showConfirm: true,
                 loading: false,
                 successMessage: 'Tasks deleted successfully!!!'
-            }
+            };
         }
 
-
         case "EDIT_TASK": {
-
-            let successMessage = 'Task edited successfully!!!'
+            let successMessage = 'Task edited successfully!!!';
             if (action.status) {
                 if (action.status === "active") {
-
-                    successMessage ='The task is active now!!!';
+                    successMessage = 'The task is active now!!!';
                 } else {
-                    successMessage ='Congrats, you have completed the task!!!';
+                    successMessage = 'Congrats, you have completed the task!!!';
                 }
             }
 
             if (action.from === "singleTask") {
-
                 return ({
                     ...state,
                     task: action.editedTask,
                     loading: false,
                     showEditSingleTaskModal: true,
-                    successMessage: successMessage,
-
-                })
+                    successMessage: successMessage
+                });
             }
             const tasksArr = state.tasks.map((task) => {
                 if (task._id !== action.editedTask._id) {
                     return task;
                 }
                 return action.editedTask;
-            })
+            });
             return {
                 ...state,
                 tasks: tasksArr,
                 showEdit: true,
                 loading: false,
-                successMessage: successMessage,
-            }
+                successMessage: successMessage
+            };
         }
 
         case "SEND_MESSAGE": {
             return {
                 ...state,
                 loading: false,
-                successMessage: 'YOUR MESSAGE SENT!!!',
-                formSuccess:true,
-
-            }
+                successMessage: 'Your message sent successfully!!!',
+                formSuccess: true
+            };
         }
         case  "REGISTER_SUCCESS": {
-
             return {
                 ...state,
                 loading: false,
                 successMessage: 'You have successfully registered!!!'
-            }
+            };
         }
         case  "LOGIN_SUCCESS": {
-
             return {
                 ...state,
                 loading: false,
-                isAuthenticated:true
-            }
+                isAuthenticated: true
+            };
         }
 
         case  "LOGOUT": {
-
             return {
                 ...state,
                 loading: false,
-                isAuthenticated:false,
-                user:null,
-            }
+                isAuthenticated: false,
+                user: null
+            };
         }
 
         case "ERROR": {
-            return (
-                {
+            return {
                     ...state,
                     loading: false,
-                    errorMessage: action.error,
-                }
-            )
+                    errorMessage: action.error
+                };
         }
 
         default:
-            return state
-
+            return state;
     }
 
 }

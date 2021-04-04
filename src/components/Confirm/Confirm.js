@@ -31,12 +31,12 @@ function Confirm(props) {
         </Modal>
 
     )
-
 }
-Confirm.propTypes={
-    onClose :PropTypes.func.isRequired,
-    onConfirm:PropTypes.func.isRequired,
-    count :PropTypes.number.isRequired,
+
+Confirm.propTypes = {
+    onClose: PropTypes.func.isRequired,
+    count: PropTypes.number.isRequired,
+    onConfirm: PropTypes.func.isRequired
 };
 
 export default Confirm;

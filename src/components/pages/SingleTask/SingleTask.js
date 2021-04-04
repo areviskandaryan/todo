@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import EditTaskModal from "../../EditTaskModal/EditTaskModal";
 import {getTask, deleteTask, editTask} from "../../../store/actions";
 import {formatDate} from "../../../helpers/utils";
+import styles from "./SingleTask.module.css";
 import {Container, Row, Col, Button, Card} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck, faEdit, faRedo, faTrash} from "@fortawesome/free-solid-svg-icons";
@@ -12,7 +13,7 @@ class SingleTask extends Component {
 
     state = {
         showEditSingleTaskModal: false,
-    }
+    };
 
     componentDidMount() {
         const taskId = this.props.match.params.taskId;
@@ -25,25 +26,24 @@ class SingleTask extends Component {
                 showEditSingleTaskModal: false,
             });
         }
-
     }
 
     handleDeleteTask = () => {
         const {deleteTask, task} = this.props;
         deleteTask(task._id, "singleTask");
-    }
+    };
 
 
     toggleShowEditTask = () => {
         const {showEditSingleTaskModal} = this.state;
         this.setState({
-            showEditSingleTaskModal: !showEditSingleTaskModal,
+            showEditSingleTaskModal: !showEditSingleTaskModal
         });
-    }
+    };
 
     render() {
         const {showEditSingleTaskModal} = this.state;
-        const {task,editTask} = this.props;
+        const {task, editTask} = this.props;
         return (
             <div className="mt-5">
                 <Container>
@@ -52,7 +52,7 @@ class SingleTask extends Component {
                             {
                                 (task === null) ?
                                     (
-                                        <p>Task data not exists!</p>
+                                        <p className={styles.text}>Task data not exists!</p>
                                     ) :
                                     (<Card className="text-center">
                                         <Card.Body>
@@ -66,7 +66,7 @@ class SingleTask extends Component {
                                                     variant="success"
                                                     className="m-1"
                                                     onClick={() => {
-                                                        editTask({status:"done", _id:task._id},"singleTask")
+                                                        editTask({status: "done", _id: task._id}, "singleTask")
                                                     }
                                                     }
                                                 >
@@ -76,7 +76,7 @@ class SingleTask extends Component {
                                                     variant="secondary"
                                                     className="m-1"
                                                     onClick={() => {
-                                                        editTask({status:"active",_id:task._id},"singleTask")
+                                                        editTask({status: "active", _id: task._id}, "singleTask")
                                                     }
                                                     }
                                                 >
@@ -94,7 +94,6 @@ class SingleTask extends Component {
                                                 variant="danger"
                                                 className="m-1"
                                                 onClick={this.handleDeleteTask}
-
                                             >
                                                 <FontAwesomeIcon icon={faTrash}/>
                                             </Button>
@@ -104,7 +103,6 @@ class SingleTask extends Component {
                         </Col>
                     </Row>
                 </Container>
-
                 {
                     showEditSingleTaskModal &&
                     <EditTaskModal
@@ -114,9 +112,7 @@ class SingleTask extends Component {
                     />
                 }
             </div>
-
         )
-
     }
 }
 
@@ -124,13 +120,13 @@ const mapDispatchToProps = {
     getTask,
     deleteTask,
     editTask
-}
+};
 
 const mapStateToProps = (state) => {
     return {
         task: state.task,
         showEditSingleTaskModal: state.showEditSingleTaskModal
-    }
-}
+    };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleTask);

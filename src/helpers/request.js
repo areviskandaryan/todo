@@ -22,14 +22,11 @@ export async function request(url, method = "GET", body) {
             const response = await (res.json())
             if (res.status >= 400 && res.status <= 599) {
                 if (response.error) {
-                    throw response.error
+                    throw response.error;
                 } else {
-                    throw new Error("Something went wrong")
+                    throw new Error("Something went wrong");
                 }
             }
             return response;
-
         })
-
-
 }

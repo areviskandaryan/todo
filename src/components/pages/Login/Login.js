@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from "react";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import {login} from "../../../store/actions"
+import {login} from "../../../store/actions";
 import {isValidEmail} from "../../../helpers/utils";
 import {Button, Form, Container, Row, Col} from "react-bootstrap";
 import styles from "./login.module.css";
@@ -30,7 +30,7 @@ function Login(props) {
             setErrors(({...errors, [name]: ""}));
         }
 
-        setValues({...values, [name]: value.trim()});
+        setValues({...values, [name]: value});
     };
 
     const handleSubmit = () => {
@@ -86,11 +86,11 @@ function Login(props) {
                 </Col>
             </Row>
         </Container>
-
     )
 }
 
 const mapDispatchToProps = {
-    login,
-}
-export default connect(null,mapDispatchToProps)(Login)
+    login
+};
+
+export default connect(null,mapDispatchToProps)(Login);

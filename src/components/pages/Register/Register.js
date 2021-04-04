@@ -30,7 +30,7 @@ function Register(props) {
 
 
     const handleChange = ({target: {value, name}}) => {
-        setValues({...values, [name]: value.trim()});
+        setValues({...values, [name]: value});
         setErrors({...errors, [name]: ""});
     };
 
@@ -64,7 +64,6 @@ function Register(props) {
             valid = false;
         }
 
-
         let passwordError = null;
         if (!values.password.trim()) {
             passwordError = "This field can't be empty.";
@@ -73,7 +72,6 @@ function Register(props) {
             passwordError = "The password must be 6 characters or longer.";
             valid = false;
         }
-
 
         let confirmPasswordError = null;
         if (!values.confirmPassword.trim()) {
@@ -90,7 +88,7 @@ function Register(props) {
             surname: surnameError,
             email: emailError,
             password: passwordError,
-            confirmPassword: confirmPasswordError,
+            confirmPassword: confirmPasswordError
         })
 
         if (valid) {
@@ -182,15 +180,15 @@ function Register(props) {
                         </div>
 
                     </Form>
-                    <Link to="/login"  className={styles.link}>Already registered? Try to login.</Link>
+                    <Link to="/login" className={styles.link}>Already registered? Try to login.</Link>
                 </Col>
             </Row>
         </Container>
-
     )
 }
 
 const mapDispatchToProps = {
-    register,
-}
+    register
+};
+
 export default connect(null, mapDispatchToProps)(Register);
